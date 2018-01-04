@@ -10,7 +10,7 @@ import contact_prediction.utils.io_utils as io
 import contact_prediction.utils.utils as u
 import contact_prediction.utils.pdb_utils as pdb
 import contact_prediction.utils.alignment_utils as au
-import contact_prediction.raw as raw
+import contact_prediction.utils.ccmraw as raw
 import contact_prediction.plotting.plot_alignment_aminoacid_distribution as alignment_plot
 #####import coupling_matrix_analysis.plot_coupling_matrix as coupling_matrix_plot
 #####import plotting.plot_contact_map as contact_map_plot
