@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+import sys
+import os
+sys.path.append(os.getcwd() + "/contact_prediction")
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
