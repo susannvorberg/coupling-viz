@@ -1,0 +1,3 @@
+[submodule "contact_prediction"]
+	path = contact_prediction
+	url = https://github.com/susannvorberg/contact_prediction
