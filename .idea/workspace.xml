@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="879b3d2c-4b5a-4ec7-8579-b6262391c8b4" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/contact_prediction" afterPath="$PROJECT_DIR$/contact_prediction" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_coupling_viz.py" afterPath="$PROJECT_DIR$/app_coupling_viz.py" />
     </list>
     <ignored path="$PROJECT_DIR$/.idea/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
