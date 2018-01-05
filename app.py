@@ -22,16 +22,19 @@ app = dash.Dash(__name__)
 
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
+#app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
-app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 def_path_braw="/home/vorberg/work/data//benchmarkset_cathV4.1/contact_prediction/ccmpred-pll-centerv/braw/"
 def_path_alignment="/home/vorberg/work/data//benchmarkset_cathV4.1/psicov/"
 def_path_pdb="/home/vorberg/work/data//benchmarkset_cathV4.1/pdb_renum_combs/"
 
+
+############################################################
+# Define Layout
+############################################################
+
 app.layout = html.Div([
-
-
     ##Alignment Stats Top Right
     html.Div(id="alignment_stats",
              style={'position': 'absolute', 'left': '35%', 'top': '3%', 'width': '63%', 'height': '10%'}),
@@ -518,26 +521,26 @@ def display_tab_4(value, protein_paths_json, protein_data_json, residue_i, resid
             braw_xpair = np.array(protein_data_dict['x_pair']).reshape((L, L, 20, 20))
             braw_xsingle = np.array(protein_data_dict['x_single']).reshape((L, 20))
 
-            if correction != "no":
-                alignment = np.array(protein_data_dict['alignment']).reshape((N, L))
-                single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
-
-                if correction == "ec":
-                    ui, correction_for_braw, eta = bu.compute_correction_ij(
-                        single_freq, neff, lambda_w, braw_xpair, residue_i, residue_j, entropy=True, squared=True)
-                elif correction == "cc":
-                    ui, correction_for_braw, eta = bu.compute_correction_ij(
-                        single_freq, neff, lambda_w, braw_xpair, residue_i, residue_j, entropy=False, squared=True)
-
-                braw_sq = braw_xpair[:,:, :20, :20]  * braw_xpair[:,:, :20, :20]
-                braw_corrected = braw_sq - eta * correction_for_braw
-
-                figure = coupling_matrix_plot.plot_coupling_matrix_i_j(
-                    braw_corrected, ui, protein_name, residue_i, residue_j, eta, plot_out=None, plot_type="heatmap")
-
-            else:
-                figure = coupling_matrix_plot.plot_coupling_matrix_i_j(
-                    braw_xpair, braw_xsingle, protein_name, residue_i, residue_j, plot_out=None, plot_type="heatmap")
+            # if correction != "no":
+            #     alignment = np.array(protein_data_dict['alignment']).reshape((N, L))
+            #     single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
+            #
+            #     if correction == "ec":
+            #         ui, correction_for_braw, eta = bu.compute_correction_ij(
+            #             single_freq, neff, lambda_w, braw_xpair, residue_i, residue_j, entropy=True, squared=True)
+            #     elif correction == "cc":
+            #         ui, correction_for_braw, eta = bu.compute_correction_ij(
+            #             single_freq, neff, lambda_w, braw_xpair, residue_i, residue_j, entropy=False, squared=True)
+            #
+            #     braw_sq = braw_xpair[:,:, :20, :20]  * braw_xpair[:,:, :20, :20]
+            #     braw_corrected = braw_sq - eta * correction_for_braw
+            #
+            #     figure = coupling_matrix_plot.plot_coupling_matrix_i_j(
+            #         braw_corrected, ui, protein_name, residue_i, residue_j, eta, plot_out=None, plot_type="heatmap")
+            #
+            # else:
+            #     figure = coupling_matrix_plot.plot_coupling_matrix_i_j(
+            #         braw_xpair, braw_xsingle, protein_name, residue_i, residue_j, plot_out=None, plot_type="heatmap")
 
         header = html.H3("Coupling matrix for residue pair {0} - {1}".format(residue_i, residue_j))
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )

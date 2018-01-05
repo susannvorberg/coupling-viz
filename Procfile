@@ -1,1 +1,1 @@
-web: gunicorn app_coupling_viz:server
+web: gunicorn app:server
