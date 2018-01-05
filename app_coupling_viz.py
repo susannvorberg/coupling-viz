@@ -68,9 +68,11 @@ app.layout = html.Div([
         html.Br(),
         dcc.Upload(
             id='upload-alignment',
-            children=[html.Button('Upload Alignment File')],
-            multiple=False,
-            style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color' : 'black', 'font-size': '16px', 'padding': '15px 32px', 'border-radius': '4px'}
+            children=[
+                html.Button('Upload Alignment File',
+                            style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color' : 'black', 'font-size': '16px', 'padding': '15px 32px', 'border-radius': '4px'})
+            ],
+            multiple=False
         ),
         html.Br(),
         html.Br(),
@@ -264,22 +266,9 @@ def load_alignment_data(alignment_contents_list, alignment_name):
 
         content_type, content_string = alignment_contents_list.split(',')
         decoded_string = base64.decodestring(content_string)
-
         decoded_split_str = decoded_string.split("\n")
 
-        print(len(decoded_split_str))
-        print(decoded_split_str[0])
-
-        for x in decoded_split_str:
-            print("start"+x.strip()+"end")
-
-        for c in decoded_split_str[0].strip():
-            print(io.AMINO_INDICES[c])
-
-
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_split_str[:-1]], dtype=np.uint8)
-
-        print(alignment[0])
 
         protein_alignment_dict['N'] = alignment.shape[0]
         protein_alignment_dict['L'] = alignment.shape[1]
@@ -447,13 +436,14 @@ def display_tab_1(value, protein_alignment_json):
         figure={}
         if 'alignment' in protein_alignment_dict:
             alignment = protein_alignment_dict['alignment']
-            #new version
-            #figure = alignment_plot.plot_amino_acid_distribution_per_position(path_dict['alignment_file'], plot_file=None, freq=False)
-            #old version
-            figure = alignment_plot.plot_amino_acid_distribution_per_position(alignment, plot_file=None, freq=False)
+            figure = alignment.plot_amino_acid_distribution_per_position(alignment, "", plot_file=None, freq=False)
+
+
+        h1="Distribution of Amino Acids per position in alignment of " + str(protein_alignment_dict['protein_name']) + \
+          "<br> N="+str(protein_alignment_dict['N']) + ", L="+str(protein_alignment_dict['L'])
 
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
-        return html.Div([graph_element], style={'text-align': 'center'})
+        return html.Div([h1, graph_element], style={'text-align': 'center'})
 
 
 @app.callback(Output('tab-output-2', 'children'),
