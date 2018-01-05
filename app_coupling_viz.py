@@ -69,7 +69,8 @@ app.layout = html.Div([
         dcc.Upload(
             id='upload-alignment',
             children=[html.Button('Upload Alignment File')],
-            multiple=False
+            multiple=False,
+            style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color' : 'black', 'font-size': '16px', 'padding': '15px 32px', 'border-radius': '4px'}
         ),
         html.Br(),
         html.Br(),
@@ -266,7 +267,11 @@ def load_alignment_data(alignment_contents_list, alignment_name):
 
         print(len(decoded_string))
 
-        for x in decoded_string[0]:
+        print(type(decoded_string))
+
+        print(decoded_string)
+
+        for x in decoded_string:
             print(x)
 
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_string], dtype=np.uint8)
