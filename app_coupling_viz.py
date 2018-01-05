@@ -15,9 +15,10 @@ import contact_prediction.utils.pdb_utils as pdb
 import contact_prediction.utils.alignment_utils as au
 import contact_prediction.utils.ccmraw as raw
 import contact_prediction.plotting.plot_alignment_aminoacid_distribution as alignment_plot
+import contact_prediction.plotting.plot_pairwise_aa_freq as pairwise_aa_plot
+
 #####import coupling_matrix_analysis.plot_coupling_matrix as coupling_matrix_plot
 #####import plotting.plot_contact_map as contact_map_plot
-#####import plotting.plot_pairwise_aa_freq as pairwise_aa_plot
 ####import utils.benchmark_utils as bu
 #####import utils.plot_utils as plots
 
@@ -64,8 +65,6 @@ app.layout = html.Div([
 
     html.Div([
 
-        html.Label("Upload a binary raw file:", style={'font-size': '16px'}),
-        html.Br(),
         dcc.Upload(
             id='upload-alignment',
             children=[
@@ -76,43 +75,27 @@ app.layout = html.Div([
         ),
         html.Br(),
         html.Br(),
-
-        html.Label("Path to alignment files:", style={'font-size': '16px'}),
-        html.Br(),
-        dcc.Input(
-            type='text',
-            value=def_path_alignment,
-            id='alignment_dir',
-            size=70
+        dcc.Upload(
+            id='upload-pdb',
+            children=[
+                html.Button('Upload PDB File',
+                            style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color': 'black',
+                                   'font-size': '16px', 'padding': '15px 32px', 'border-radius': '4px'})
+            ],
+            multiple=False
         ),
         html.Br(),
         html.Br(),
-
-        html.Label("Path to PDB files:", style={'font-size': '16px'}),
-        html.Br(),
-        dcc.Input(
-            type='text',
-            value=def_path_pdb,
-            id='pdb_dir',
-            size=70
+        dcc.Upload(
+            id='upload-braw',
+            children=[
+                html.Button('Upload binary raw coupling File',
+                            style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color': 'black',
+                                   'font-size': '16px', 'padding': '15px 32px', 'border-radius': '4px'})
+            ],
+            multiple=False
         ),
-        html.Br(),
-        html.Br(),
 
-        html.Label("Protein name:", style={'font-size': '16px'}),
-        html.Br(),
-        dcc.Input(
-            type='text',
-            value='1mkcA00',
-            id="protein_name"
-        ),
-        html.Br(),
-        html.Br(),
-
-        html.Button('Submit', id='button',
-                    style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color' : 'black', 'font-size': '16px', 'padding': '15px 32px', 'border-radius': '4px'}),
-        html.Br(),
-        html.Br(),
 
 
         html.Div(
@@ -448,21 +431,21 @@ def display_tab_1(value, protein_alignment_json):
 
 @app.callback(Output('tab-output-2', 'children'),
               [Input('tabs', 'value'),
-               Input('protein_paths', 'children'),
+               Input('protein_alignment', 'children'),
                Input('res_i', 'value'),
                Input('res_j', 'value')
                ])
-def display_tab_2(value, protein_paths_json, residue_i, residue_j):
-
-    path_dict = json.loads(protein_paths_json)
+def display_tab_2(value, protein_alignment_json, residue_i, residue_j):
+    protein_alignment_dict = json.loads(protein_alignment_json)
 
     if value == 2:
         figure = {}
 
-        # if len(path_dict['alignment_file']) > 0:
-        #     figure = pairwise_aa_plot.plot_aa_frequencies(
-        #         path_dict['alignment_file'], residue_i, residue_j, plot_frequencies=True, plot_type="heatmap",
-        #         plot_out=None)
+        if 'alignment' in protein_alignment_dict:
+            alignment = protein_alignment_dict['alignment']
+
+            figure = pairwise_aa_plot.plot_aa_frequencies(
+                alignment, residue_i, residue_j, plot_frequencies=True, plot_type="heatmap", plot_out=None)
 
         header = html.H3("Pairwise AA Frequencies for residue pair {0} - {1}".format(residue_i, residue_j))
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
