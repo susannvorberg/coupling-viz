@@ -4,7 +4,7 @@
     <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
       <option name="ignoredPackages">
         <value>
-          <list size="159">
+          <list size="160">
             <item index="0" class="java.lang.String" itemvalue="functools32" />
             <item index="1" class="java.lang.String" itemvalue="numba" />
             <item index="2" class="java.lang.String" itemvalue="greenlet" />
@@ -164,6 +164,7 @@
             <item index="156" class="java.lang.String" itemvalue="ply" />
             <item index="157" class="java.lang.String" itemvalue="openpyxl" />
             <item index="158" class="java.lang.String" itemvalue="gunicorn" />
+            <item index="159" class="java.lang.String" itemvalue="contact-prediction" />
           </list>
         </value>
       </option>
