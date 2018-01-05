@@ -37,7 +37,7 @@ app.scripts.config.serve_locally = True
 app.layout = html.Div([
     ##Alignment Stats Top Right
     html.Div(id="alignment_stats",
-             style={'position': 'absolute', 'left': '35%', 'top': '3%', 'width': '63%', 'height': '10%'}),
+             style={'position': 'absolute', 'left': '20%', 'top': '3%', 'width': '78%', 'height': '10%'}),
 
     ## tabs and Output Right
     html.Div([
@@ -53,7 +53,7 @@ app.layout = html.Div([
         html.Div(id='tab-output-2',style={'display': 'none'}),
         html.Div(id='tab-output-3',style={'display': 'none'}),
         html.Div(id='tab-output-4',style={'display': 'none'}),
-    ], style={'position': 'absolute', 'left': '35%', 'top': '15%', 'width': '63%', 'height': '80%'}),
+    ], style={'position': 'absolute', 'left': '20%', 'top': '15%', 'width': '78%', 'height': '80%'}),
 
 
     ## Menu - left
@@ -90,6 +90,8 @@ app.layout = html.Div([
             ],
             multiple=False
         ),
+        html.Br(),
+        html.Br(),
 
 
 
@@ -104,7 +106,7 @@ app.layout = html.Div([
                             id="res_i",
                             value="1")
                     ],
-                    style={'display': 'inline', 'width': '20'}
+                    style={'display': 'inline', 'width': '10'}
                 ),
                 html.Div(
                     children = [
@@ -114,11 +116,11 @@ app.layout = html.Div([
                             id="res_j",
                             value="2")
                     ],
-                    style={'display': 'inline', 'max-width': '20'}
+                    style={'display': 'inline', 'max-width': '10'}
                 ),
                 html.Br()
             ],
-            style={'display': 'none'}
+            style={'display': 'none', 'width': '10'}
         ),
 
 
@@ -178,7 +180,7 @@ app.layout = html.Div([
             style={'display': 'none'}
         )
 
-    ], style={'position': 'absolute', 'left': '3%', 'top': '3%', 'width' : '30%'}),
+    ], style={'position': 'absolute', 'left': '3%', 'top': '3%', 'width' : '20%'}),
 
 
 
@@ -404,8 +406,10 @@ def display_tab_1(value, protein_alignment_json):
     if value == 1:
         figure={}
         if 'alignment' in protein_alignment_dict:
-            alignment = protein_alignment_dict['alignment']
-            figure = alignment.plot_amino_acid_distribution_per_position(alignment, "", plot_file=None, freq=False)
+            alignment = np.array(protein_alignment_dict['alignment'], dtype=np.uint8)
+            alignment = alignment.reshape((protein_alignment_dict['N'], protein_alignment_dict['L']))
+
+            figure = alignment_plot.plot_amino_acid_distribution_per_position(alignment, "", plot_file=None, freq=False)
 
 
         h1="Distribution of Amino Acids per position in alignment of " + str(protein_alignment_dict['protein_name']) + \
@@ -428,10 +432,15 @@ def display_tab_2(value, protein_alignment_json, residue_i, residue_j):
         figure = {}
 
         if 'alignment' in protein_alignment_dict:
-            alignment = protein_alignment_dict['alignment']
+            alignment = np.array(protein_alignment_dict['alignment'], dtype=np.uint8)
+            alignment = alignment.reshape((protein_alignment_dict['N'], protein_alignment_dict['L']))
+            protein_name = protein_alignment_dict['protein_name']
 
             figure = pairwise_aa_plot.plot_aa_frequencies(
-                alignment, residue_i, residue_j, plot_frequencies=True, plot_type="heatmap", plot_out=None)
+                alignment, protein_name, residue_i, residue_j, plot_frequencies=True,
+                plot_type="heatmap", plot_out=None)
+
+
 
         header = html.H3("Pairwise AA Frequencies for residue pair {0} - {1}".format(residue_i, residue_j))
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
@@ -451,7 +460,7 @@ def display_tab_2(value, protein_alignment_json, residue_i, residue_j):
 def display_tab_3(value, protein_paths_json, protein_data_json,  correction, seq_sep, contact_threshold):
 
     path_dict = json.loads(protein_paths_json)
-    protein_name = path_dict['protein_name']
+    # protein_name = path_dict['protein_name']
     protein_data_dict = json.loads(protein_data_json)
 
     if value == 3:
@@ -505,21 +514,19 @@ def display_tab_3(value, protein_paths_json, protein_data_json,  correction, seq
 def display_tab_4(value, protein_paths_json, protein_data_json, residue_i, residue_j, correction):
 
     path_dict = json.loads(protein_paths_json)
-    protein_name = path_dict['protein_name']
     protein_data_dict = json.loads(protein_data_json)
 
     if value == 4:
         figure = {}
 
-        if len(path_dict['braw_file']) > 0:
-
-            L = protein_data_dict['L']
-            N = protein_data_dict['N']
-            lambda_w = protein_data_dict['lambda_w']
-            neff = protein_data_dict['neff']
-
-            braw_xpair = np.array(protein_data_dict['x_pair']).reshape((L, L, 20, 20))
-            braw_xsingle = np.array(protein_data_dict['x_single']).reshape((L, 20))
+        # if len(path_dict['braw_file']) > 0:
+            # L = protein_data_dict['L']
+            # N = protein_data_dict['N']
+            # lambda_w = protein_data_dict['lambda_w']
+            # neff = protein_data_dict['neff']
+            #
+            # braw_xpair = np.array(protein_data_dict['x_pair']).reshape((L, L, 20, 20))
+            # braw_xsingle = np.array(protein_data_dict['x_single']).reshape((L, 20))
 
             # if correction != "no":
             #     alignment = np.array(protein_data_dict['alignment']).reshape((N, L))
