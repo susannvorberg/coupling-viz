@@ -266,9 +266,16 @@ def load_alignment_data(alignment_contents_list, alignment_name):
         decoded_string = base64.decodestring(content_string)
 
         decoded_split_str = decoded_string.split("\n")
+        
         print(len(decoded_split_str))
-
         print(decoded_split_str[0])
+
+        for x in decoded_split_str:
+            print("start"+x.strip()+"end")
+
+        for c in decoded_split_str[0].strip():
+            print(io.AMINO_INDICES[c])
+
 
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_split_str], dtype=np.uint8)
 
