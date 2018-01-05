@@ -18,10 +18,12 @@ import contact_prediction.plotting.plot_alignment_aminoacid_distribution as alig
 ####import utils.benchmark_utils as bu
 #####import utils.plot_utils as plots
 
-app = dash.Dash()
+app = dash.Dash(__name__)
 
-app.css.config.serve_locally = True
-app.scripts.config.serve_locally = True
+#app.css.config.serve_locally = True
+#app.scripts.config.serve_locally = True
+
+app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
 
 def_path_braw="/home/vorberg/work/data//benchmarkset_cathV4.1/contact_prediction/ccmpred-pll-centerv/braw/"
 def_path_alignment="/home/vorberg/work/data//benchmarkset_cathV4.1/psicov/"
