@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output, State
 import flask
 import os
 import numpy as np
+import base64
 import glob
 import json
 import contact_prediction.utils.io_utils as io
@@ -267,7 +268,12 @@ def load_braw_data(n_clicks, alignment_contents_list, alignment_filename):
 
     if alignment_contents_list is not None:
         print(alignment_filename)
-        alignment = io.read_alignment(alignment_filename)
+
+        r = base64.decodestring(alignment_contents_list)
+        ar_string = np.frombuffer(r, dtype=np.float64)
+        alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in ar_string], dtype=np.uint8)
+
+
         protein_data['N'] = alignment.shape[0]
         protein_data['L'] = alignment.shape[1]
         protein_data['alignment'] = alignment.reshape(protein_data['N'] * protein_data['L']).tolist()
