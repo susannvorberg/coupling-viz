@@ -262,15 +262,21 @@ app.layout = html.Div([
                 Input('upload-alignment', 'contents'),
                 Input('upload-alignment', 'filename')]
               )
-def load_braw_data(n_clicks, alignment_contents_list, alignment_filename):
+def load_alignment_data(n_clicks, alignment_contents_list, alignment_filename):
 
     protein_data = {}
 
     if alignment_contents_list is not None:
         print(alignment_filename)
 
-        r = base64.decodestring(alignment_contents_list)
-        ar_string = np.frombuffer(r, dtype=np.float64)
+        r = base64.decodestring(alignment_contents_list[0])
+
+        print(r)
+
+        ar_string = np.frombuffer(r, dtype=np.str)
+
+        print(ar_string)
+            
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in ar_string], dtype=np.uint8)
 
 
