@@ -3,6 +3,8 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
+import flask
+import os
 import numpy as np
 import glob
 import json
@@ -18,12 +20,13 @@ import contact_prediction.plotting.plot_alignment_aminoacid_distribution as alig
 ####import utils.benchmark_utils as bu
 #####import utils.plot_utils as plots
 
-app = dash.Dash(__name__)
+server = flask.Flask(__name__)
+server.secret_key = os.environ.get('secret_key', 'secret')
+app = dash.Dash(name = __name__, server = server)
+app.config.supress_callback_exceptions = True
 
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
-#app.css.append_css({"external_url": "https://codepen.io/chriddyp/pen/bWLwgP.css"})
-
 
 def_path_braw="/home/vorberg/work/data//benchmarkset_cathV4.1/contact_prediction/ccmpred-pll-centerv/braw/"
 def_path_alignment="/home/vorberg/work/data//benchmarkset_cathV4.1/psicov/"
@@ -548,5 +551,6 @@ def display_tab_4(value, protein_paths_json, protein_data_json, residue_i, resid
 
 
 
+# Run the Dash app
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.server.run(debug=True, threaded=True)
