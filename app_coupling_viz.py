@@ -66,11 +66,10 @@ app.layout = html.Div([
         html.Label("Upload a binary raw file:", style={'font-size': '16px'}),
         html.Br(),
         dcc.Upload(
-            id='upload-braw',
-            children=html.Div([
-                'Drag and Drop or ',
-                html.A('Select Files')
-            ]),style={
+            id='upload-alignment',
+            children=[html.Button('Upload File')],
+            multiple=False,
+            style={
                 'width': '100%',
                 'height': '60px',
                 'lineHeight': '60px',
@@ -79,8 +78,7 @@ app.layout = html.Div([
                 'borderRadius': '5px',
                 'textAlign': 'center',
                 'margin': '10px'
-            },
-            multiple=False
+            }
         ),
         html.Br(),
         html.Br(),
@@ -260,18 +258,19 @@ app.layout = html.Div([
 
 @app.callback(Output('protein_data', 'children'),
                 [Input('button', 'n_clicks'),
-                Input('upload-braw', 'contents'),
-                Input('upload-braw', 'filename'),]
+                Input('upload-alignment', 'contents'),
+                Input('upload-alignment', 'filename')]
               )
-def load_braw_data(n_clicks, braw_contents_list, braw_filename):
+def load_braw_data(n_clicks, alignment_contents_list, alignment_filename):
 
     protein_data = {}
-    if braw_contents_list is not None:
-        print(braw_filename)
 
-        content_type, content_string = braw_contents_list.split(',')
-
-        alignment = io.read_alignment(braw_filename)
+    if alignment_contents_list is not None:
+        print(alignment_filename)
+        alignment = io.read_alignment(alignment_filename)
+        protein_data['N'] = alignment.shape[0]
+        protein_data['L'] = alignment.shape[1]
+        protein_data['alignment'] = alignment.reshape(protein_data['N'] * protein_data['L']).tolist()
 
 
 
