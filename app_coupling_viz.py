@@ -269,14 +269,23 @@ def load_alignment_data(n_clicks, alignment_contents_list, alignment_filename):
     if alignment_contents_list is not None:
         print(alignment_filename)
 
-        r = base64.decodestring(alignment_contents_list[0])
+        print(len(alignment_contents_list))
+
+        print(alignment_contents_list)
+
+        content_type, content_string = alignment_contents_list.split(',')
+        decoded = base64.b64decode(content_string)
+
+        print(decoded)
+
+        r = base64.decodestring(content_string)
 
         print(r)
 
         ar_string = np.frombuffer(r, dtype=np.str)
 
         print(ar_string)
-            
+
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in ar_string], dtype=np.uint8)
 
 
