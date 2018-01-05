@@ -2,14 +2,13 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
-from flask import Flask
+import flask
 import os
 
-server = Flask(__name__)
+server = flask.Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
 app = dash.Dash(name = __name__, server = server)
 app.config.supress_callback_exceptions = True
-
 
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
@@ -41,3 +40,8 @@ app.layout = html.Div(children=[
 )
 def update_output_div(input_value):
     return 'You\'ve entered "{}"'.format(input_value)
+
+
+# Run the Dash app
+if __name__ == '__main__':
+    app.server.run(debug=True, threaded=True)
