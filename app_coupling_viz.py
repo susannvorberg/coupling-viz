@@ -269,10 +269,8 @@ def load_alignment_data(alignment_contents_list, alignment_name):
 
         print(type(decoded_string))
 
-        print(decoded_string)
-
-        for x in decoded_string:
-            print(x)
+        decoded_split_str = decoded_string.split("\n")
+        print(len(decoded_split_str))
 
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_string], dtype=np.uint8)
 
