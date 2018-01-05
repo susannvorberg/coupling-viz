@@ -68,18 +68,8 @@ app.layout = html.Div([
         html.Br(),
         dcc.Upload(
             id='upload-alignment',
-            children=[html.Button('Upload File')],
-            multiple=False,
-            style={
-                'width': '100%',
-                'height': '60px',
-                'lineHeight': '60px',
-                'borderWidth': '1px',
-                'borderStyle': 'dashed',
-                'borderRadius': '5px',
-                'textAlign': 'center',
-                'margin': '10px'
-            }
+            children=[html.Button('Upload Alignment File')],
+            multiple=False
         ),
         html.Br(),
         html.Br(),
@@ -222,6 +212,7 @@ app.layout = html.Div([
 
     # Hidden div inside the app that stores the intermediate value
     html.Div(id='protein_paths', style={'display': 'none'}),
+    html.Div(id='protein_data', style={'display': 'none'}),
     html.Div(id='protein_alignment', style={'display': 'none'}),
     html.Div(id='protein_braw', style={'display': 'none'}),
     html.Div(id='protein_pdb', style={'display': 'none'})
@@ -265,8 +256,8 @@ app.layout = html.Div([
               )
 def load_alignment_data(alignment_contents_list, alignment_name):
 
-    protein_alignment = {}
-    protein_alignment['protein_name'] = alignment_name.split(".")[0]
+    protein_alignment_dict = {}
+    protein_alignment_dict['protein_name'] = alignment_name.split(".")[0]
 
     if alignment_contents_list is not None:
 
@@ -280,11 +271,11 @@ def load_alignment_data(alignment_contents_list, alignment_name):
 
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_string], dtype=np.uint8)
 
-        protein_alignment['N'] = alignment.shape[0]
-        protein_alignment['L'] = alignment.shape[1]
-        protein_alignment['alignment'] = alignment.reshape(protein_alignment['N'] * protein_alignment['L']).tolist()
+        protein_alignment_dict['N'] = alignment.shape[0]
+        protein_alignment_dict['L'] = alignment.shape[1]
+        protein_alignment_dict['alignment'] = alignment.reshape(protein_alignment_dict['N'] * protein_alignment_dict['L']).tolist()
 
-    return json.dumps(protein_alignment)
+    return json.dumps(protein_alignment_dict)
 
 # @app.callback(Output('protein_data', 'children'),
 #               [Input('protein_paths', 'children')]
@@ -317,10 +308,10 @@ def load_alignment_data(alignment_contents_list, alignment_name):
 #     return json.dumps(protein_data)
 
 
-@app.callback(Output('res_i', 'options'), [Input('protein_data', 'children')])
-def update_res_i(protein_data_json):
-    protein_data=json.loads(protein_data_json)
-    dropdown_options = [{'label': str(i), 'value': str(i)} for i in range(1, protein_data['L']-1)]
+@app.callback(Output('res_i', 'options'), [Input('protein_alignment', 'children')])
+def update_res_i(protein_alignment_json):
+    protein_alignment_dict=json.loads(protein_alignment_json)
+    dropdown_options = [{'label': str(i), 'value': str(i)} for i in range(1, protein_alignment_dict['L']-1)]
     return(dropdown_options)
 
 
@@ -331,29 +322,25 @@ def update_res_j(value, res_i_options):
     return(dropdown_options)
 
 
-@app.callback(Output('alignment_stats', 'children'), [Input('protein_data', 'children')])
-def update_alignment_stats(protein_data_json):
-    protein_data_dict=json.loads(protein_data_json)
+@app.callback(Output('alignment_stats', 'children'), [Input('protein_alignment', 'children')])
+def update_alignment_stats(protein_alignment_json):
 
-    title1 = "L: " + str(protein_data_dict['L'])
-    title2 = "N: " + str(protein_data_dict['N'])
-    title3 = "Neff: " + str(np.round(protein_data_dict['neff'], decimals=3))
-    title4 = "diversity: " + str(np.round(protein_data_dict['diversity'], decimals=3))
+    protein_alignment_dict=json.loads(protein_alignment_json)
 
     header_1 = html.H3("Alignment Statistics")
 
     table = html.Table([
         html.Tr([
             html.Td("protein length", style={'padding': '5'}),
-            html.Td("number of sequences", style={'padding': '5'}),
-            html.Td("Neff", style={'padding': '5'}),
-            html.Td("Diversity", style={ 'padding': '5'})
+            html.Td("number of sequences", style={'padding': '5'})
+            #html.Td("Neff", style={'padding': '5'}),
+            #html.Td("Diversity", style={ 'padding': '5'})
         ], style={'background': 'white', 'font-weight': 'bold'}),
         html.Tr([
-            html.Td(protein_data_dict['L'], style={'padding': '5'}),
-            html.Td(protein_data_dict['N'], style={'padding': '5'}),
-            html.Td(np.round(protein_data_dict['neff'], decimals=3), style={ 'padding': '5'}),
-            html.Td(np.round(protein_data_dict['diversity'], decimals=3), style={'padding': '5'})
+            html.Td(protein_alignment_dict['L'], style={'padding': '5'}),
+            html.Td(protein_alignment_dict['N'], style={'padding': '5'})
+            #html.Td(np.round(protein_data_dict['neff'], decimals=3), style={ 'padding': '5'}),
+            #html.Td(np.round(protein_data_dict['diversity'], decimals=3), style={'padding': '5'})
         ], style={'background': 'white', 'font-weight': 'normal'})
     ], style={'border-collapse': 'collapse', 'margin-left': 'auto', 'margin-right': 'auto'})
 
@@ -441,18 +428,19 @@ def switch_visibility_tab_4(value):
 
 @app.callback(Output('tab-output-1', 'children'),
               [Input('tabs', 'value'),
-               Input('protein_paths', 'children')])
-def display_tab_1(value, protein_paths_json):
+               Input('protein_alignment', 'children')])
+def display_tab_1(value, protein_alignment_json):
 
-    path_dict = json.loads(protein_paths_json)
+    protein_alignment_dict = json.loads(protein_alignment_json)
 
     if value == 1:
         figure={}
-        if len(path_dict['alignment_file']) > 0:
+        if 'alignment' in protein_alignment_dict:
+            alignment = protein_alignment_dict['alignment']
             #new version
             #figure = alignment_plot.plot_amino_acid_distribution_per_position(path_dict['alignment_file'], plot_file=None, freq=False)
             #old version
-            figure = alignment_plot.plot_amino_acid_distribution_per_position(path_dict['alignment_file'], plot_file=None, freq=False)
+            figure = alignment_plot.plot_amino_acid_distribution_per_position(alignment, plot_file=None, freq=False)
 
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
         return html.Div([graph_element], style={'text-align': 'center'})
