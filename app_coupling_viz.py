@@ -265,14 +265,12 @@ def load_alignment_data(alignment_contents_list, alignment_name):
         content_type, content_string = alignment_contents_list.split(',')
         decoded_string = base64.decodestring(content_string)
 
-        print(len(decoded_string))
-
-        print(type(decoded_string))
-
         decoded_split_str = decoded_string.split("\n")
         print(len(decoded_split_str))
 
-        alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_string], dtype=np.uint8)
+        print(decoded_split_str[0])
+
+        alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_split_str], dtype=np.uint8)
 
         protein_alignment_dict['N'] = alignment.shape[0]
         protein_alignment_dict['L'] = alignment.shape[1]
