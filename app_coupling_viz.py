@@ -267,26 +267,14 @@ def load_alignment_data(n_clicks, alignment_contents_list, alignment_filename):
     protein_data = {}
 
     if alignment_contents_list is not None:
-        print(alignment_filename)
-
-        print(len(alignment_contents_list))
-
-        print(alignment_contents_list)
 
         content_type, content_string = alignment_contents_list.split(',')
-        decoded = base64.b64decode(content_string)
+        decoded_string = base64.decodestring(content_string)
 
-        print(decoded)
+        print(decoded_string)
 
-        r = base64.decodestring(content_string)
+        alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_string], dtype=np.uint8)
 
-        print(r)
-
-        ar_string = np.frombuffer(r, dtype=np.str)
-
-        print(ar_string)
-
-        alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in ar_string], dtype=np.uint8)
 
 
         protein_data['N'] = alignment.shape[0]
