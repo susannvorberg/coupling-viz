@@ -63,13 +63,24 @@ app.layout = html.Div([
 
     html.Div([
 
-        html.Label("Path to binary raw files:", style={'font-size': '16px'}),
+        html.Label("Upload a binary raw file:", style={'font-size': '16px'}),
         html.Br(),
-        dcc.Input(
-            type='text',
-            value=def_path_braw,
-            id='braw_dir',
-            size=70
+        dcc.Upload(
+            id='upload-braw',
+            children=html.Div([
+                'Drag and Drop or ',
+                html.A('Select Files')
+            ]),style={
+                'width': '100%',
+                'height': '60px',
+                'lineHeight': '60px',
+                'borderWidth': '1px',
+                'borderStyle': 'dashed',
+                'borderRadius': '5px',
+                'textAlign': 'center',
+                'margin': '10px'
+            },
+            multiple=False
         ),
         html.Br(),
         html.Br(),
@@ -227,54 +238,72 @@ app.layout = html.Div([
 ############################################################
 
 
-@app.callback(Output('protein_paths', 'children'),
-              [Input('button', 'n_clicks')],
-              [State('alignment_dir', 'value'),
-               State('braw_dir', 'value'),
-               State('pdb_dir', 'value'),
-               State('protein_name', 'value')]
+# @app.callback(Output('protein_paths', 'children'),
+#               [Input('button', 'n_clicks')],
+#               [State('alignment_dir', 'value'),
+#                State('braw_dir', 'value'),
+#                State('pdb_dir', 'value'),
+#                State('protein_name', 'value')]
+#               )
+# def set_file_paths(n_clicks, alignment_dir, braw_dir, pdb_dir, protein_name):
+#
+#     path_dict = {
+#         'alignment_file': glob.glob(alignment_dir + "/*" + protein_name + "*.psc")[0],
+#         'braw_file': glob.glob(braw_dir + "/*" + protein_name + "*.braw.gz")[0],
+#         'pdb_file': glob.glob(pdb_dir + "/*" + protein_name + "*.pdb")[0],
+#         'protein_name': protein_name
+#     }
+#
+#     return json.dumps(path_dict)
+
+
+
+@app.callback(Output('protein_data', 'children'),
+                [Input('button', 'n_clicks'),
+                Input('upload-braw', 'contents'),
+                Input('upload-braw', 'filename'),]
               )
-def set_file_paths(n_clicks, alignment_dir, braw_dir, pdb_dir, protein_name):
+def load_braw_data(n_clicks, braw_contents_list, braw_filename):
 
-    path_dict = {
-        'alignment_file': glob.glob(alignment_dir + "/*" + protein_name + "*.psc")[0],
-        'braw_file': glob.glob(braw_dir + "/*" + protein_name + "*.braw.gz")[0],
-        'pdb_file': glob.glob(pdb_dir + "/*" + protein_name + "*.pdb")[0],
-        'protein_name': protein_name
-    }
-
-    return json.dumps(path_dict)
-
-
-
-
-@app.callback(Output('protein_data', 'children'),[Input('protein_paths', 'children')])
-def load_data(protein_paths_json):
-
-    path_dict =  json.loads(protein_paths_json)
     protein_data = {}
+    if braw_contents_list is not None:
+        print(braw_filename)
 
-    if len(path_dict['braw_file']) > 0:
-        braw = raw.parse_msgpack(path_dict['braw_file'])
+        content_type, content_string = braw_contents_list.split(',')
 
-        protein_data['N'] = u.find_dict_key('nrow', braw.meta['workflow'][0])
-        protein_data['L'] = u.find_dict_key('ncol', braw.meta['workflow'][0])
-        protein_data['neff'] = u.find_dict_key('neff', braw.meta['workflow'][0])
-        protein_data['diversity'] = np.sqrt(protein_data['N']) / protein_data['L']
-        protein_data['lambda_w'] = u.find_dict_key('lambda_pair', braw.meta['workflow'][0])
+        alignment = io.read_alignment(braw_filename)
 
-        protein_data['x_pair'] = braw.x_pair[:, :, :20, :20].reshape(protein_data['L'] * protein_data['L'] * 20 * 20).tolist()
-        protein_data['x_single'] = braw.x_single[:, :20].reshape(protein_data['L'] * 20).tolist()
 
-    if len(path_dict['alignment_file']) > 0:
-        alignment = io.read_alignment(path_dict['alignment_file'])
-        protein_data['alignment'] = alignment.reshape(protein_data['N'] * protein_data['L']).tolist()
 
-    if len(path_dict['pdb_file']) > 0:
-        distance_map = pdb.distance_map(path_dict['pdb_file'], L=protein_data['L'])
-        protein_data['distance_map'] = distance_map.reshape(protein_data['L'] * protein_data['L']).tolist()
-
-    return json.dumps(protein_data)
+# @app.callback(Output('protein_data', 'children'),
+#               [Input('protein_paths', 'children')]
+#               )
+# def load_data(protein_paths_json):
+#
+#     path_dict =  json.loads(protein_paths_json)
+#     protein_data = {}
+#
+#     if len(path_dict['braw_file']) > 0:
+#         braw = raw.parse_msgpack(path_dict['braw_file'])
+#
+#         protein_data['N'] = u.find_dict_key('nrow', braw.meta['workflow'][0])
+#         protein_data['L'] = u.find_dict_key('ncol', braw.meta['workflow'][0])
+#         protein_data['neff'] = u.find_dict_key('neff', braw.meta['workflow'][0])
+#         protein_data['diversity'] = np.sqrt(protein_data['N']) / protein_data['L']
+#         protein_data['lambda_w'] = u.find_dict_key('lambda_pair', braw.meta['workflow'][0])
+#
+#         protein_data['x_pair'] = braw.x_pair[:, :, :20, :20].reshape(protein_data['L'] * protein_data['L'] * 20 * 20).tolist()
+#         protein_data['x_single'] = braw.x_single[:, :20].reshape(protein_data['L'] * 20).tolist()
+#
+#     if len(path_dict['alignment_file']) > 0:
+#         alignment = io.read_alignment(path_dict['alignment_file'])
+#         protein_data['alignment'] = alignment.reshape(protein_data['N'] * protein_data['L']).tolist()
+#
+#     if len(path_dict['pdb_file']) > 0:
+#         distance_map = pdb.distance_map(path_dict['pdb_file'], L=protein_data['L'])
+#         protein_data['distance_map'] = distance_map.reshape(protein_data['L'] * protein_data['L']).tolist()
+#
+#     return json.dumps(protein_data)
 
 
 @app.callback(Output('res_i', 'options'), [Input('protein_data', 'children')])
