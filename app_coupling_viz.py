@@ -16,7 +16,6 @@ import contact_prediction.utils.alignment_utils as au
 import contact_prediction.utils.ccmraw as raw
 import contact_prediction.plotting.plot_alignment_aminoacid_distribution as alignment_plot
 import contact_prediction.plotting.plot_pairwise_aa_freq as pairwise_aa_plot
-
 #####import coupling_matrix_analysis.plot_coupling_matrix as coupling_matrix_plot
 #####import plotting.plot_contact_map as contact_map_plot
 ####import utils.benchmark_utils as bu
@@ -29,10 +28,6 @@ app.config.supress_callback_exceptions = True
 
 app.css.config.serve_locally = True
 app.scripts.config.serve_locally = True
-
-def_path_braw="/home/vorberg/work/data//benchmarkset_cathV4.1/contact_prediction/ccmpred-pll-centerv/braw/"
-def_path_alignment="/home/vorberg/work/data//benchmarkset_cathV4.1/psicov/"
-def_path_pdb="/home/vorberg/work/data//benchmarkset_cathV4.1/pdb_renum_combs/"
 
 
 ############################################################
@@ -186,15 +181,6 @@ app.layout = html.Div([
     ], style={'position': 'absolute', 'left': '3%', 'top': '3%', 'width' : '30%'}),
 
 
-
-
-    # html.Div([
-    #     dcc.Graph(id='alignment_graph')
-    # ], style={'position': 'absolute', 'left': '35%', 'top': '3%', 'width' : '63%', 'height': '40%'}),
-    #
-    # html.Div([
-    #     dcc.Graph(id='pairwise_aa_freq_graph')
-    # ], style={'position': 'absolute', 'left': '35%', 'top': '43%', 'width': '63%', 'height': '40%'}),
 
     # Hidden div inside the app that stores the intermediate value
     html.Div(id='protein_paths', style={'display': 'none'}),

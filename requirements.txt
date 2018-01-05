@@ -40,3 +40,4 @@ traitlets==4.3.2
 urllib3==1.22
 Werkzeug==0.14.1
 git+https://github.com/susannvorberg/contact_prediction@master#egg=contact_prediction
+
