@@ -222,7 +222,9 @@ app.layout = html.Div([
 
     # Hidden div inside the app that stores the intermediate value
     html.Div(id='protein_paths', style={'display': 'none'}),
-    html.Div(id='protein_data', style={'display': 'none'})
+    html.Div(id='protein_alignment', style={'display': 'none'}),
+    html.Div(id='protein_braw', style={'display': 'none'}),
+    html.Div(id='protein_pdb', style={'display': 'none'})
 
 ])
 
@@ -257,31 +259,32 @@ app.layout = html.Div([
 
 
 
-@app.callback(Output('protein_data', 'children'),
-                [Input('button', 'n_clicks'),
-                Input('upload-alignment', 'contents'),
-                Input('upload-alignment', 'filename')]
+@app.callback(Output('protein_alignment', 'children'),
+                [Input('upload-alignment', 'contents'),
+                 Input('upload-alignment', 'filename')]
               )
-def load_alignment_data(n_clicks, alignment_contents_list, alignment_filename):
+def load_alignment_data(alignment_contents_list, alignment_name):
 
-    protein_data = {}
+    protein_alignment = {}
+    protein_alignment['protein_name'] = alignment_name.split(".")[0]
 
     if alignment_contents_list is not None:
 
         content_type, content_string = alignment_contents_list.split(',')
         decoded_string = base64.decodestring(content_string)
 
-        print(decoded_string)
+        print(len(decoded_string))
+
+        for x in decoded_string[0]:
+            print(x)
 
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_string], dtype=np.uint8)
 
+        protein_alignment['N'] = alignment.shape[0]
+        protein_alignment['L'] = alignment.shape[1]
+        protein_alignment['alignment'] = alignment.reshape(protein_alignment['N'] * protein_alignment['L']).tolist()
 
-
-        protein_data['N'] = alignment.shape[0]
-        protein_data['L'] = alignment.shape[1]
-        protein_data['alignment'] = alignment.reshape(protein_data['N'] * protein_data['L']).tolist()
-
-
+    return json.dumps(protein_alignment)
 
 # @app.callback(Output('protein_data', 'children'),
 #               [Input('protein_paths', 'children')]
