@@ -39,4 +39,4 @@ six==1.11.0
 traitlets==4.3.2
 urllib3==1.22
 Werkzeug==0.14.1
--e /home/vorberg/Documents/contact_pred_rescue/contact_prediction
+-e ../../contact_pred_rescue/contact_prediction/
