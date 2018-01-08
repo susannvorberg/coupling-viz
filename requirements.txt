@@ -39,4 +39,4 @@ six==1.11.0
 traitlets==4.3.2
 urllib3==1.22
 Werkzeug==0.14.1
--e ../../contact_pred_rescue/contact_prediction/
+git+git://github.com/susannvorberg/contact_prediction@681baebf028cd598ec5dcb30c4be1771671659b0
