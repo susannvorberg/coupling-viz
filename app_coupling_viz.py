@@ -7,19 +7,18 @@ import flask
 import os
 import numpy as np
 import base64
-import glob
+import pandas as pd
 import json
 import contact_prediction.utils.io_utils as io
 import contact_prediction.utils.utils as u
 import contact_prediction.utils.pdb_utils as pdb
 import contact_prediction.utils.alignment_utils as au
+import contact_prediction.utils.benchmark_utils as bu
 import contact_prediction.utils.ccmraw as raw
+import contact_prediction.utils.plot_utils as plot
 import contact_prediction.plotting.plot_alignment_aminoacid_distribution as alignment_plot
 import contact_prediction.plotting.plot_pairwise_aa_freq as pairwise_aa_plot
-#####import coupling_matrix_analysis.plot_coupling_matrix as coupling_matrix_plot
-#####import plotting.plot_contact_map as contact_map_plot
-####import utils.benchmark_utils as bu
-#####import utils.plot_utils as plots
+import contact_prediction.plotting.plot_alignment_coverage as aligncov
 
 server = flask.Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
@@ -37,7 +36,7 @@ app.scripts.config.serve_locally = True
 app.layout = html.Div([
     ##Alignment Stats Top Right
     html.Div(id="alignment_stats",
-             style={'position': 'absolute', 'left': '20%', 'top': '3%', 'width': '78%', 'height': '10%'}),
+             style={'position': 'absolute', 'left': '25%', 'top': '3%', 'width': '63%', 'height': '10%'}),
 
     ## tabs and Output Right
     html.Div([
@@ -53,7 +52,7 @@ app.layout = html.Div([
         html.Div(id='tab-output-2',style={'display': 'none'}),
         html.Div(id='tab-output-3',style={'display': 'none'}),
         html.Div(id='tab-output-4',style={'display': 'none'}),
-    ], style={'position': 'absolute', 'left': '20%', 'top': '15%', 'width': '78%', 'height': '80%'}),
+    ], style={'position': 'absolute', 'left': '25%', 'top': '15%', 'width': '63%', 'height': '80%'}),
 
 
     ## Menu - left
@@ -69,7 +68,6 @@ app.layout = html.Div([
             multiple=False
         ),
         html.Br(),
-        html.Br(),
         dcc.Upload(
             id='upload-pdb',
             children=[
@@ -79,7 +77,6 @@ app.layout = html.Div([
             ],
             multiple=False
         ),
-        html.Br(),
         html.Br(),
         dcc.Upload(
             id='upload-braw',
@@ -135,7 +132,8 @@ app.layout = html.Div([
                         {'label': 'Entropy Correction', 'value': 'ec'},
                         {'label': 'Count Correction', 'value': 'cc'}
                     ],
-                    value='no'
+                    value='no',
+                    labelStyle={'display': 'block'}
                 )
             ],
             style={'display': 'none'}
@@ -154,27 +152,28 @@ app.layout = html.Div([
                         {'label': 'Entropy Correction', 'value': 'ec'},
                         {'label': 'Count Correction', 'value': 'cc'}
                     ],
-                    value='apc'
+                    value='apc',
+                    labelStyle={'display': 'block'}
                 ),
                 html.Br(),
                 html.Label("Sequence separation:  ", style={'font-size': '16px'}),
                 dcc.Slider(
                     id='sequence_separation',
-                    min=1,
-                    max=15,
-                    step=1,
+                    min=2,
+                    max=12,
+                    step=2,
                     value=6,
-                    marks={i: str(i) for i in range(1,16)}
+                    marks={i: str(i) for i in range(2,12+1,2)}
                 ),
                 html.Br(),
                 html.Label("Contact Threshold:  ", style={'font-size': '16px'}),
                 dcc.Slider(
                     id='contact_threshold',
                     min=4,
-                    max=15,
-                    step=1,
+                    max=14,
+                    step=2,
                     value=8,
-                    marks={i: str(i) for i in range(4,16)}
+                    marks={i: str(i) for i in range(4,14+1,2)}
                 )
             ],
             style={'display': 'none'}
@@ -185,8 +184,6 @@ app.layout = html.Div([
 
 
     # Hidden div inside the app that stores the intermediate value
-    html.Div(id='protein_paths', style={'display': 'none'}),
-    html.Div(id='protein_data', style={'display': 'none'}),
     html.Div(id='protein_alignment', style={'display': 'none'}),
     html.Div(id='protein_braw', style={'display': 'none'}),
     html.Div(id='protein_pdb', style={'display': 'none'})
@@ -200,29 +197,8 @@ app.layout = html.Div([
 
 
 ############################################################
-# Reactivity
+# Reactivity - load data
 ############################################################
-
-
-# @app.callback(Output('protein_paths', 'children'),
-#               [Input('button', 'n_clicks')],
-#               [State('alignment_dir', 'value'),
-#                State('braw_dir', 'value'),
-#                State('pdb_dir', 'value'),
-#                State('protein_name', 'value')]
-#               )
-# def set_file_paths(n_clicks, alignment_dir, braw_dir, pdb_dir, protein_name):
-#
-#     path_dict = {
-#         'alignment_file': glob.glob(alignment_dir + "/*" + protein_name + "*.psc")[0],
-#         'braw_file': glob.glob(braw_dir + "/*" + protein_name + "*.braw.gz")[0],
-#         'pdb_file': glob.glob(pdb_dir + "/*" + protein_name + "*.pdb")[0],
-#         'protein_name': protein_name
-#     }
-#
-#     return json.dumps(path_dict)
-
-
 
 @app.callback(Output('protein_alignment', 'children'),
                 [Input('upload-alignment', 'contents'),
@@ -231,9 +207,11 @@ app.layout = html.Div([
 def load_alignment_data(alignment_contents_list, alignment_name):
 
     protein_alignment_dict = {}
-    protein_alignment_dict['protein_name'] = alignment_name.split(".")[0]
 
     if alignment_contents_list is not None:
+
+        protein_alignment_dict['protein_name'] = alignment_name.split(".")[0]
+        protein_alignment_dict['alignment_filename'] = alignment_name
 
         content_type, content_string = alignment_contents_list.split(',')
         decoded_string = base64.decodestring(content_string)
@@ -247,41 +225,164 @@ def load_alignment_data(alignment_contents_list, alignment_name):
 
     return json.dumps(protein_alignment_dict)
 
-# @app.callback(Output('protein_data', 'children'),
-#               [Input('protein_paths', 'children')]
-#               )
-# def load_data(protein_paths_json):
-#
-#     path_dict =  json.loads(protein_paths_json)
-#     protein_data = {}
-#
-#     if len(path_dict['braw_file']) > 0:
-#         braw = raw.parse_msgpack(path_dict['braw_file'])
-#
-#         protein_data['N'] = u.find_dict_key('nrow', braw.meta['workflow'][0])
-#         protein_data['L'] = u.find_dict_key('ncol', braw.meta['workflow'][0])
-#         protein_data['neff'] = u.find_dict_key('neff', braw.meta['workflow'][0])
-#         protein_data['diversity'] = np.sqrt(protein_data['N']) / protein_data['L']
-#         protein_data['lambda_w'] = u.find_dict_key('lambda_pair', braw.meta['workflow'][0])
-#
-#         protein_data['x_pair'] = braw.x_pair[:, :, :20, :20].reshape(protein_data['L'] * protein_data['L'] * 20 * 20).tolist()
-#         protein_data['x_single'] = braw.x_single[:, :20].reshape(protein_data['L'] * 20).tolist()
-#
-#     if len(path_dict['alignment_file']) > 0:
-#         alignment = io.read_alignment(path_dict['alignment_file'])
-#         protein_data['alignment'] = alignment.reshape(protein_data['N'] * protein_data['L']).tolist()
-#
-#     if len(path_dict['pdb_file']) > 0:
-#         distance_map = pdb.distance_map(path_dict['pdb_file'], L=protein_data['L'])
-#         protein_data['distance_map'] = distance_map.reshape(protein_data['L'] * protein_data['L']).tolist()
-#
-#     return json.dumps(protein_data)
 
+@app.callback(Output('protein_pdb', 'children'),
+              [Input('upload-pdb', 'contents'),
+               Input('upload-pdb', 'filename')],
+              [State('protein_alignment', 'children')]
+              )
+def load_pdb_data(pdb_contents_list, pdb_name, protein_alignment_json):
+
+    protein_pdb_dict = {}
+
+    if pdb_contents_list is not None:
+
+        protein_pdb_dict['protein_name'] = pdb_name.split(".")[0]
+        protein_pdb_dict['pdb_filename'] = pdb_name
+
+        content_type, content_string = pdb_contents_list.split(',')
+        decoded_string = base64.decodestring(content_string)
+
+        f = open('./tmp.pdb', 'w')
+        f.write(decoded_string)
+        f.close()
+
+        L=None
+        protein_alignment_dict = json.loads(protein_alignment_json)
+        if 'L' in protein_alignment_dict:
+            L = protein_alignment_dict['L']
+
+        distance_map = pdb.distance_map('./tmp.pdb', L=L, distance_definition="Cb")
+        protein_pdb_dict['distance_map'] = distance_map.reshape(L * L).tolist()
+
+    return json.dumps(protein_pdb_dict)
+
+
+@app.callback(Output('protein_braw', 'children'), [Input('upload-braw', 'contents'), Input('upload-braw', 'filename')])
+def load_braw_data(braw_contents_list, braw_name):
+
+    protein_braw_dict = {}
+
+    if braw_contents_list is not None:
+        protein_braw_dict['protein_name'] = braw_name.split(".")[0]
+        protein_braw_dict['braw_filename'] = braw_name
+
+        content_type, content_string = braw_contents_list.split(',')
+        decoded_string = base64.decodestring(content_string)
+
+        f = open('./tmp.braw.gz', 'w')
+        f.write(decoded_string)
+        f.close()
+
+        braw = raw.parse_msgpack('./tmp.braw.gz')
+        L = braw.ncol
+
+        protein_braw_dict['meta'] = braw.meta
+
+        protein_braw_dict['x_single'] = braw.x_single[:, :20].reshape(L * 20).tolist()
+        protein_braw_dict['x_pair'] = braw.x_pair[:, :, :20, :20].reshape(L * L * 20 * 20).tolist()
+
+    return json.dumps(protein_braw_dict)
+
+
+
+############################################################
+# Reactivity - Stats
+############################################################
+
+@app.callback(Output('alignment_stats', 'children'),
+              [Input('protein_alignment', 'children'),
+               Input('protein_pdb', 'children'),
+               Input('protein_braw', 'children')])
+def update_alignment_stats(protein_alignment_json, protein_pdb_json, protein_braw_json):
+
+    protein_alignment_dict = json.loads(protein_alignment_json)
+    protein_braw_dict = json.loads(protein_braw_json)
+    protein_pdb_dict = json.loads(protein_pdb_json)
+
+    protein_name = ""
+    if 'protein_name' in protein_alignment_dict:
+        protein_name = protein_alignment_dict['protein_name']
+    elif 'protein_name' in protein_pdb_dict:
+        protein_name = protein_pdb_dict['protein_name']
+    elif 'protein_name' in protein_braw_dict:
+        protein_name = protein_braw_dict['protein_name']
+
+    L = ""
+    if 'L' in protein_alignment_dict:
+        L = protein_alignment_dict['L']
+    elif 'meta' in protein_braw_dict:
+        L = u.find_dict_key('ncol', protein_braw_dict['meta']['workflow'][0])
+
+    N = ""
+    if 'N' in protein_alignment_dict:
+        N = protein_alignment_dict['N']
+    elif 'meta' in protein_braw_dict:
+        N = u.find_dict_key('nrow', protein_braw_dict['meta']['workflow'][0])
+
+    Neff = ""
+    if 'meta' in protein_braw_dict:
+        Neff = np.round(u.find_dict_key('neff', protein_braw_dict['meta']['workflow'][0]), decimals=3)
+
+    Diversity=""
+    if L != "" and N != "":
+        Diversity = np.round(np.sqrt(int(N)) / int(L), decimals=3)
+
+    if 'alignment' in protein_alignment_dict:
+        status_1 ="Alignment file {0} successfully loaded.".format(protein_alignment_dict['alignment_filename'])
+    else:
+        status_1 = "No alignment file loaded!"
+
+    if 'distance_map' in protein_pdb_dict:
+        status_2 ="PDB file {0} successfully loaded.".format(protein_pdb_dict['pdb_filename'])
+    else:
+        status_2 = "No PDB file loaded!"
+
+    if 'x_pair' in protein_braw_dict:
+        status_3 ="Binary raw file {0} successfully loaded.".format(protein_braw_dict['braw_filename'])
+    else:
+        status_3 = "No binary raw file loaded!"
+
+    status_div = html.Div(
+        children=[html.P(status_1), html.P(status_2), html.P(status_3)],
+        style={'position': 'absolute', 'left': '0%', 'top': '0%', 'width' : '50%', 'text-align': 'left'}
+    )
+
+    header_1 = html.H3("Protein {0}".format(protein_name))
+    table = html.Table([
+        html.Tr([
+            html.Td("protein length", style={'padding': '5'}),
+            html.Td("number of sequences", style={'padding': '5'}),
+            html.Td("Neff", style={'padding': '5'}),
+            html.Td("Diversity", style={ 'padding': '5'})
+        ], style={'background': 'white', 'font-weight': 'bold'}),
+        html.Tr([
+            html.Td(L, style={'padding': '5'}),
+            html.Td(N, style={'padding': '5'}),
+            html.Td(Neff, style={ 'padding': '5'}),
+            html.Td(Diversity, style={'padding': '5'})
+        ], style={'background': 'white', 'font-weight': 'normal'})
+    ], style={'border-collapse': 'collapse', 'margin-left': 'auto', 'margin-right': 'auto'})
+
+    statistics_div = html.Div(
+        children=[header_1, table],
+        style={'position': 'absolute', 'left': '50%', 'top': '0%', 'width': '50%', 'text-align': 'center'}
+    )
+
+    return html.Div([status_div, statistics_div])
+
+############################################################
+# Menu display according to Tab
+############################################################
 
 @app.callback(Output('res_i', 'options'), [Input('protein_alignment', 'children')])
 def update_res_i(protein_alignment_json):
     protein_alignment_dict=json.loads(protein_alignment_json)
-    dropdown_options = [{'label': str(i), 'value': str(i)} for i in range(1, protein_alignment_dict['L']-1)]
+
+    if 'L' in protein_alignment_dict:
+        dropdown_options = [{'label': str(i), 'value': str(i)} for i in range(1, protein_alignment_dict['L']-1)]
+    else:
+        dropdown_options = [{'label': '1', 'value': '1'}]
     return(dropdown_options)
 
 
@@ -292,36 +393,6 @@ def update_res_j(value, res_i_options):
     return(dropdown_options)
 
 
-@app.callback(Output('alignment_stats', 'children'), [Input('protein_alignment', 'children')])
-def update_alignment_stats(protein_alignment_json):
-
-    protein_alignment_dict=json.loads(protein_alignment_json)
-
-    header_1 = html.H3("Alignment Statistics")
-
-    table = html.Table([
-        html.Tr([
-            html.Td("protein length", style={'padding': '5'}),
-            html.Td("number of sequences", style={'padding': '5'})
-            #html.Td("Neff", style={'padding': '5'}),
-            #html.Td("Diversity", style={ 'padding': '5'})
-        ], style={'background': 'white', 'font-weight': 'bold'}),
-        html.Tr([
-            html.Td(protein_alignment_dict['L'], style={'padding': '5'}),
-            html.Td(protein_alignment_dict['N'], style={'padding': '5'})
-            #html.Td(np.round(protein_data_dict['neff'], decimals=3), style={ 'padding': '5'}),
-            #html.Td(np.round(protein_data_dict['diversity'], decimals=3), style={'padding': '5'})
-        ], style={'background': 'white', 'font-weight': 'normal'})
-    ], style={'border-collapse': 'collapse', 'margin-left': 'auto', 'margin-right': 'auto'})
-
-
-    return html.Div([header_1, table], style={'text-align': 'center'})
-
-############################################################
-# Menu display according to Tab
-############################################################
-
-
 @app.callback(Output('contact_map_options', 'style'), [Input('tabs', 'value')])
 def adjust_menu(value):
 
@@ -330,7 +401,7 @@ def adjust_menu(value):
     elif value == 2:
         return {'display': 'none'}
     elif value == 3:
-        return {'display': 'inline'}
+        return {'display': 'inline-block'}
     elif value == 4:
         return {'display': 'none'}
 
@@ -356,7 +427,7 @@ def adjust_menu(value):
     elif value == 3:
         return {'display': 'none'}
     elif value == 4:
-        return {'display': 'inline'}
+        return {'display': 'inline-block'}
 
 
 ############################################################
@@ -401,22 +472,22 @@ def switch_visibility_tab_4(value):
                Input('protein_alignment', 'children')])
 def display_tab_1(value, protein_alignment_json):
 
-    protein_alignment_dict = json.loads(protein_alignment_json)
+    if value == 1 and protein_alignment_json is not None:
 
-    if value == 1:
+        protein_alignment_dict = json.loads(protein_alignment_json)
+
         figure={}
+        h2=""
+
         if 'alignment' in protein_alignment_dict:
             alignment = np.array(protein_alignment_dict['alignment'], dtype=np.uint8)
             alignment = alignment.reshape((protein_alignment_dict['N'], protein_alignment_dict['L']))
 
             figure = alignment_plot.plot_amino_acid_distribution_per_position(alignment, "", plot_file=None, freq=False)
-
-
-        h1="Distribution of Amino Acids per position in alignment of " + str(protein_alignment_dict['protein_name']) + \
-          "<br> N="+str(protein_alignment_dict['N']) + ", L="+str(protein_alignment_dict['L'])
+            h2=html.H2("Distribution of Amino Acids per position in alignment")
 
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
-        return html.Div([h1, graph_element], style={'text-align': 'center'})
+        return html.Div([h2, graph_element], style={'text-align': 'center'})
 
 
 @app.callback(Output('tab-output-2', 'children'),
@@ -426,9 +497,10 @@ def display_tab_1(value, protein_alignment_json):
                Input('res_j', 'value')
                ])
 def display_tab_2(value, protein_alignment_json, residue_i, residue_j):
-    protein_alignment_dict = json.loads(protein_alignment_json)
 
-    if value == 2:
+    if value == 2 and protein_alignment_json is not None:
+
+        protein_alignment_dict = json.loads(protein_alignment_json)
         figure = {}
 
         if 'alignment' in protein_alignment_dict:
@@ -451,51 +523,71 @@ def display_tab_2(value, protein_alignment_json, residue_i, residue_j):
 
 @app.callback(Output('tab-output-3', 'children'),
               [Input('tabs', 'value'),
-               Input('protein_paths', 'children'),
-               Input('protein_data', 'children'),
+               Input('protein_alignment', 'children'),
+               Input('protein_pdb', 'children'),
+               Input('protein_braw', 'children'),
                Input('contact_score_correction', 'value'),
                Input('sequence_separation', 'value'),
                Input('contact_threshold', 'value')
                ])
-def display_tab_3(value, protein_paths_json, protein_data_json,  correction, seq_sep, contact_threshold):
+def display_tab_3(value, protein_alignment_json, protein_pdb_json, protein_braw_json, correction, seq_sep, contact_threshold):
 
-    path_dict = json.loads(protein_paths_json)
-    # protein_name = path_dict['protein_name']
-    protein_data_dict = json.loads(protein_data_json)
+    if value == 3 and protein_braw_json is not None:
 
-    if value == 3:
+        protein_braw = json.loads(protein_braw_json)
         figure = {}
 
-        #if len(path_dict['braw_file']) > 0:
-        #
-        #     braw_xpair = np.array(protein_data_dict['x_pair']).reshape((L, L, 20, 20))
-        #
-        #     if correction == "ec" and len(path_dict['alignment_file']) > 0:
-        #         alignment = protein_data_dict['alignment']
-        #         single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
-        #         mat = bu.compute_entropy_corrected_mat(braw, single_freq, squared=False)
-        #     elif correction == "apc":
-        #         mat = bu.compute_l2norm_from_braw(braw, True)
-        #     else:
-        #         mat = bu.compute_l2norm_from_braw(braw, False)
-        #
-        #     alignment_file = None
-        #     if len(path_dict['alignment_file']) > 0:
-        #         alignment_file = path_dict['alignment_file']
-        #
-        #     pdb_file = None
-        #     if len(path_dict['pdb_file']) > 0:
-        #         pdb_file = path_dict['pdb_file']
-        #
-        #     title1 = " "
-        #
-        #
-        #     figure = contact_map_plot.plot_contact_map(
-        #         mat, seq_sep, contact_threshold, title,
-        #         alignment_file=alignment_file,
-        #         pdb_file=pdb_file,
-        #         plot_file=None
-        #     )
+        if 'x_pair' in protein_braw:
+
+            L = u.find_dict_key('ncol', protein_braw['meta']['workflow'][0])
+            print(len(protein_braw['x_pair']))
+            print(protein_braw['x_pair'][:10])
+            print(np.array(protein_braw['x_pair']).shape)
+            braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
+
+            alignment=None
+            if protein_alignment_json is not None:
+                protein_alignment = json.loads(protein_alignment_json)
+                alignment = np.array(protein_alignment['alignment']).reshape((protein_alignment['N'], L))
+
+            observed_distances = None
+            if protein_pdb_json is not None:
+                protein_pdb = json.loads(protein_pdb_json)
+                observed_distances = np.array(protein_pdb['distance_map']).reshape((L,L))
+
+
+            if correction == "ec" and alignment is not None:
+                single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
+                mat = bu.compute_entropy_corrected_mat(braw_x_pair, single_freq, squared=False)
+            elif correction == "apc":
+                mat = bu.compute_l2norm_from_braw(braw_x_pair, True)
+            else:
+                mat = bu.compute_l2norm_from_braw(braw_x_pair, False)
+
+
+            ### if alignment file is specified, compute gaps
+            if alignment is not None:
+                gaps_percentage_plot = aligncov.plot_percentage_gaps_per_position(alignment, plot_file=None)
+            else:
+                gaps_percentage_plot = None
+
+            plot_matrix = pd.DataFrame()
+            indices_upper_tri = np.triu_indices(L, seq_sep)
+
+            #get residue-residue distance information from PDB
+            if observed_distances is not None:
+                plot_matrix['distance'] = observed_distances[indices_upper_tri]
+                plot_matrix['contact'] = ((plot_matrix.distance < contact_threshold) * 1).tolist()
+
+            # add scores
+            plot_matrix['residue_i'] = indices_upper_tri[0] + 1
+            plot_matrix['residue_j'] = indices_upper_tri[1] + 1
+            plot_matrix['confidence'] = mat[indices_upper_tri]
+
+            ### Plot Contact Map
+            figure = plot.plot_contact_map_someScore_plotly(
+                plot_matrix, "", seq_sep, gaps_percentage_plot, plot_file=None)
+
 
 
         header = html.H4("Contact Map with correction = {0} using sequence separation = {1} and contact threshold = {2}".format(correction, seq_sep, contact_threshold))
@@ -505,18 +597,19 @@ def display_tab_3(value, protein_paths_json, protein_data_json,  correction, seq
 
 @app.callback(Output('tab-output-4', 'children'),
               [Input('tabs', 'value'),
-               Input('protein_paths', 'children'),
-               Input('protein_data', 'children'),
+               Input('protein_braw', 'children'),
+               Input('protein_alignment', 'children'),
                Input('res_i', 'value'),
                Input('res_j', 'value'),
                Input('coupling_matrix_correction', 'value')
                ])
-def display_tab_4(value, protein_paths_json, protein_data_json, residue_i, residue_j, correction):
+def display_tab_4(value, protein_braw_json, protein_alignment_json, residue_i, residue_j, correction):
 
-    path_dict = json.loads(protein_paths_json)
-    protein_data_dict = json.loads(protein_data_json)
 
-    if value == 4:
+
+    if value == 4 and protein_braw_json is not None:
+        protein_braw = json.loads(protein_braw_json)
+
         figure = {}
 
         # if len(path_dict['braw_file']) > 0:
