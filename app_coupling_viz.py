@@ -19,6 +19,7 @@ import contact_prediction.utils.plot_utils as plot
 import contact_prediction.plotting.plot_alignment_aminoacid_distribution as alignment_plot
 import contact_prediction.plotting.plot_pairwise_aa_freq as pairwise_aa_plot
 import contact_prediction.plotting.plot_alignment_coverage as aligncov
+import contact_prediction.plotting.plot_precision_vs_rank as prec_plot
 
 server = flask.Flask(__name__)
 server.secret_key = os.environ.get('secret_key', 'secret')
@@ -44,7 +45,8 @@ app.layout = html.Div([
             tabs=[{'label': 'Alignment', 'value': 1},
                   {'label': 'Pairwise AA Freq', 'value': 2},
                   {'label': 'Contact Maps', 'value': 3},
-                  {'label': 'Coupling Matrices', 'value': 4}],
+                  {'label': 'Precision', 'value': 4},
+                  {'label': 'Coupling Matrices', 'value': 5}],
             value=1,
             id='tabs'
         ),
@@ -52,6 +54,7 @@ app.layout = html.Div([
         html.Div(id='tab-output-2',style={'display': 'none'}),
         html.Div(id='tab-output-3',style={'display': 'none'}),
         html.Div(id='tab-output-4',style={'display': 'none'}),
+        html.Div(id='tab-output-5',style={'display': 'none'}),
     ], style={'position': 'absolute', 'left': '25%', 'top': '15%', 'width': '63%', 'height': '80%'}),
 
 
@@ -134,28 +137,35 @@ app.layout = html.Div([
                     ],
                     value='no',
                     labelStyle={'display': 'block'}
-                )
+                ),
+                html.Br()
             ],
             style={'display': 'none'}
         ),
 
+    html.Div(
+        id="contact_map_correction",
+        children = [
+            html.Label("Apply correction to contact score:  ", style={'font-size': '16px'}),
+            dcc.RadioItems(
+                id='contact_score_correction',
+                options=[
+                    {'label': 'no correction', 'value': 'no'},
+                    {'label': 'APC', 'value': 'apc'},
+                    {'label': 'Entropy Correction', 'value': 'ec'},
+                    {'label': 'Count Correction', 'value': 'cc'}
+                ],
+                value='apc',
+                labelStyle={'display': 'block'}
+            ),
+            html.Br()
+        ],
+        style={'display': 'none'}
+        ),
 
         html.Div(
             id='contact_map_options',
             children = [
-                html.Label("Apply correction to contact score:  ", style={'font-size': '16px'}),
-                dcc.RadioItems(
-                    id='contact_score_correction',
-                    options=[
-                        {'label': 'no correction', 'value': 'no'},
-                        {'label': 'APC', 'value': 'apc'},
-                        {'label': 'Entropy Correction', 'value': 'ec'},
-                        {'label': 'Count Correction', 'value': 'cc'}
-                    ],
-                    value='apc',
-                    labelStyle={'display': 'block'}
-                ),
-                html.Br(),
                 html.Label("Sequence separation:  ", style={'font-size': '16px'}),
                 dcc.Slider(
                     id='sequence_separation',
@@ -393,6 +403,20 @@ def update_res_j(value, res_i_options):
     return(dropdown_options)
 
 
+@app.callback(Output('contact_map_correction', 'style'), [Input('tabs', 'value')])
+def adjust_menu(value):
+
+    if value == 1:
+        return {'display': 'none'}
+    elif value == 2:
+        return {'display': 'none'}
+    elif value == 3:
+        return {'display': 'block'}
+    elif value == 4:
+        return {'display': 'none'}
+    elif value == 5:
+        return {'display': 'none'}
+
 @app.callback(Output('contact_map_options', 'style'), [Input('tabs', 'value')])
 def adjust_menu(value):
 
@@ -401,8 +425,10 @@ def adjust_menu(value):
     elif value == 2:
         return {'display': 'none'}
     elif value == 3:
-        return {'display': 'inline-block'}
+        return {'display': 'block'}
     elif value == 4:
+        return {'display': 'block'}
+    elif value == 5:
         return {'display': 'none'}
 
 @app.callback(Output('residue_pair_ids', 'style'), [Input('tabs', 'value')])
@@ -411,11 +437,13 @@ def adjust_menu(value):
     if value == 1:
         return {'display': 'none'}
     elif value == 2:
-        return {'display': 'inline'}
+        return {'display': 'block'}
     elif value == 3:
         return {'display': 'none'}
     elif value == 4:
-        return {'display': 'inline'}
+        return {'display': 'none'}
+    elif value == 5:
+        return {'display': 'block'}
 
 @app.callback(Output('coupling_matrix_options', 'style'), [Input('tabs', 'value')])
 def adjust_menu(value):
@@ -427,7 +455,9 @@ def adjust_menu(value):
     elif value == 3:
         return {'display': 'none'}
     elif value == 4:
-        return {'display': 'inline-block'}
+        return {'display': 'none'}
+    elif value == 5:
+        return {'display': 'block'}
 
 
 ############################################################
@@ -462,6 +492,13 @@ def switch_visibility_tab_4(value):
         return {'display': 'block', 'align': 'center'}
     else:
         return {'display': 'none'}
+
+@app.callback(Output('tab-output-5', 'style'), [Input('tabs', 'value')])
+def switch_visibility_tab_5(value):
+        if value == 5:
+            return {'display': 'block', 'align': 'center'}
+        else:
+            return {'display': 'none'}
 ############################################################
 # Tab Display
 ############################################################
@@ -513,7 +550,6 @@ def display_tab_2(value, protein_alignment_json, residue_i, residue_j):
                 plot_type="heatmap", plot_out=None)
 
 
-
         header = html.H3("Pairwise AA Frequencies for residue pair {0} - {1}".format(residue_i, residue_j))
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
 
@@ -540,9 +576,6 @@ def display_tab_3(value, protein_alignment_json, protein_pdb_json, protein_braw_
         if 'x_pair' in protein_braw:
 
             L = u.find_dict_key('ncol', protein_braw['meta']['workflow'][0])
-            print(len(protein_braw['x_pair']))
-            print(protein_braw['x_pair'][:10])
-            print(np.array(protein_braw['x_pair']).shape)
             braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
 
             alignment=None
@@ -591,11 +624,56 @@ def display_tab_3(value, protein_alignment_json, protein_pdb_json, protein_braw_
 
 
         header = html.H4("Contact Map with correction = {0} using sequence separation = {1} and contact threshold = {2}".format(correction, seq_sep, contact_threshold))
-        graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
+        graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 600})
 
         return html.Div([header, graph_element], style={'text-align': 'center'})
 
+
 @app.callback(Output('tab-output-4', 'children'),
+              [Input('tabs', 'value'),
+               Input('protein_braw', 'children'),
+               Input('protein_pdb', 'children'),
+               Input('protein_alignment', 'children'),
+               Input('sequence_separation', 'value'),
+               Input('contact_threshold', 'value')
+               ])
+def display_tab_4(value, protein_braw_json, protein_pdb_json, protein_alignment_json, seq_sep, contact_threshold):
+
+
+    if value == 4 and protein_braw_json is not None and protein_pdb_json is not None:
+
+        protein_braw = json.loads(protein_braw_json)
+        protein_pdb = json.loads(protein_pdb_json)
+        alignment = json.loads(protein_alignment_json)
+
+        L = u.find_dict_key('ncol', protein_braw['meta']['workflow'][0])
+        braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
+
+        observed_distances = np.array(protein_pdb['distance_map']).reshape((L,L))
+
+        dict_scores = {}
+        for correction in ["apc", "no"]: #extend computation of corrections
+
+            if correction == "ec" and alignment is not None:
+                single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
+                mat = bu.compute_entropy_corrected_mat(braw_x_pair, single_freq, squared=False)
+            elif correction == "apc":
+                mat = bu.compute_l2norm_from_braw(braw_x_pair, True)
+            else:
+                mat = bu.compute_l2norm_from_braw(braw_x_pair, False)
+
+            dict_scores['frobenius-' + correction] = mat
+
+
+        figure = prec_plot.plot_precision_vs_rank(
+            dict_scores, observed_distances, seq_sep, contact_threshold, "", plot_out=None)
+
+        header = html.H3("Precision vs Rank ")
+        graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 600})
+        return html.Div([header, graph_element], style={'text-align': 'center'})
+
+
+@app.callback(Output('tab-output-5', 'children'),
               [Input('tabs', 'value'),
                Input('protein_braw', 'children'),
                Input('protein_alignment', 'children'),
@@ -603,11 +681,11 @@ def display_tab_3(value, protein_alignment_json, protein_pdb_json, protein_braw_
                Input('res_j', 'value'),
                Input('coupling_matrix_correction', 'value')
                ])
-def display_tab_4(value, protein_braw_json, protein_alignment_json, residue_i, residue_j, correction):
+def display_tab_5(value, protein_braw_json, protein_alignment_json, residue_i, residue_j, correction):
 
 
 
-    if value == 4 and protein_braw_json is not None:
+    if value == 5 and protein_braw_json is not None:
         protein_braw = json.loads(protein_braw_json)
 
         figure = {}
