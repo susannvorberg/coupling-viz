@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../../contact_pred_rescue/.idea/contact_pred_rescue.iml" filepath="$PROJECT_DIR$/../../contact_pred_rescue/.idea/contact_pred_rescue.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/.idea/contact_prediction.iml" filepath="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/.idea/contact_prediction.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/coupling_viz.iml" filepath="$PROJECT_DIR$/.idea/coupling_viz.iml" />
     </modules>
   </component>
