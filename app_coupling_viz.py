@@ -229,15 +229,21 @@ def load_alignment_data(alignment_contents_list, alignment_name):
 
         alignment = np.array([[io.AMINO_INDICES[c] for c in x.strip()] for x in decoded_split_str[:-1]], dtype=np.uint8)
 
-        protein_alignment_dict['N'] = alignment.shape[0]
-        protein_alignment_dict['L'] = alignment.shape[1]
-        protein_alignment_dict['alignment'] = alignment.reshape(protein_alignment_dict['N'] * protein_alignment_dict['L']).tolist()
+        N = alignment.shape[0]
+        L = alignment.shape[1]
+        protein_alignment_dict['N'] = N
+        protein_alignment_dict['L'] = L
+        protein_alignment_dict['alignment'] = alignment.reshape(N * L).tolist()
 
         #compute amino acid frequencies incl sequence weighting and pseudocounts
         single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
+        protein_alignment_dict['single_freq'] = single_freq[:, :20].reshape(L * 20).tolist()
+        protein_alignment_dict['pair_freq'] = pair_freq[:, :, :20, :20].reshape(L * L * 20 * 20).tolist()
 
-        protein_alignment_dict['single_freq'] = single_freq[:, :20].reshape(protein_alignment_dict['L'] * 20).tolist()
-        protein_alignment_dict['pair_freq'] = pair_freq[:, :, :20, :20].reshape(protein_alignment_dict['L'] * protein_alignment_dict['L'] * 20 * 20).tolist()
+        #also compute the counts without pseudo-counts
+        single_counts, pairwise_counts = au.compute_counts(alignment, compute_weights=True)
+        protein_alignment_dict['single_counts'] = single_counts[:, :20].reshape(L * 20).tolist()
+        protein_alignment_dict['pair_counts'] = pairwise_counts[:, :, :20, :20].reshape(L * L * 20 * 20).tolist()
 
 
     return json.dumps(protein_alignment_dict)
