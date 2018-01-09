@@ -588,6 +588,8 @@ def display_tab_3(value, protein_alignment_json, protein_pdb_json, protein_braw_
 
         if 'x_pair' in protein_braw:
 
+            print(protein_braw['meta']['workflow'][0])
+
             L = u.find_dict_key('ncol', protein_braw['meta']['workflow'][0])
             braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
 
