@@ -233,6 +233,13 @@ def load_alignment_data(alignment_contents_list, alignment_name):
         protein_alignment_dict['L'] = alignment.shape[1]
         protein_alignment_dict['alignment'] = alignment.reshape(protein_alignment_dict['N'] * protein_alignment_dict['L']).tolist()
 
+        #compute amino acid frequencies incl sequence weighting and pseudocounts
+        single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
+
+        protein_alignment_dict['single_freq'] = single_freq[:, :20].reshape(protein_alignment_dict['L'] * 20).tolist()
+        protein_alignment_dict['pair_freq'] = pair_freq[:, :, :20, :20].reshape(protein_alignment_dict['L'] * protein_alignment_dict['L'] * 20 * 20).tolist()
+
+
     return json.dumps(protein_alignment_dict)
 
 

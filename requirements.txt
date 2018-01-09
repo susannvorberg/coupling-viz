@@ -40,4 +40,4 @@ six==1.11.0
 traitlets==4.3.2
 urllib3==1.22
 Werkzeug==0.14.1
-git+https://github.com/susannvorberg/contact_prediction@d76c67ef3d9770075dff56a161df09548dc4c273
+git+git://github.com/susannvorberg/contact_prediction.git@85f7c2dbbb31e58e10c0b23dc90e2c63c0125541
