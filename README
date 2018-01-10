@@ -1,0 +1,12 @@
+
+#push new commits
+git push heroku master
+
+#start web app
+heroku ps:scale web=1
+
+#read log files
+heroku logs
+
+#force rebuild
+heroku repo:purge_cache -a coupling-viz
