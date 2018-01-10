@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="879b3d2c-4b5a-4ec7-8579-b6262391c8b4" name="Default" comment="">
+      <change type="DELETED" beforePath="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/.idea/vcs.xml" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/ext/weighting/libweighting.so" afterPath="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/ext/weighting/libweighting.so" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/compute_pair_weight_score.py" afterPath="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/compute_pair_weight_score.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app_coupling_viz.py" afterPath="$PROJECT_DIR$/app_coupling_viz.py" />
     </list>
@@ -21,34 +23,78 @@
       <file leaf-file-name="app_coupling_viz.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app_coupling_viz.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="589" column="0" lean-forward="true" selection-start-line="589" selection-start-column="0" selection-end-line="589" selection-end-column="0" />
+            <state relative-caret-position="532">
+              <caret line="995" column="116" lean-forward="false" selection-start-line="995" selection-start-column="116" selection-end-line="995" selection-end-column="116" />
               <folding>
                 <element signature="e#24#35#0" expanded="true" />
+                <element signature="e#1166#1226#0" expanded="false" />
+                <element signature="e#2847#3127#0" expanded="false" />
+                <element signature="e#2930#3112#0" expanded="false" />
+                <element signature="e#3257#3553#0" expanded="false" />
+                <element signature="e#3356#3538#0" expanded="false" />
+                <element signature="e#4239#5246#0" expanded="false" />
+                <element signature="e#4298#4638#0" expanded="false" />
+                <element signature="e#4779#5119#0" expanded="false" />
+                <element signature="e#9321#10060#0" expanded="false" />
+                <element signature="e#10455#10515#0" expanded="false" />
+                <element signature="e#10874#12739#0" expanded="false" />
+                <element signature="e#11252#11704#0" expanded="false" />
+                <element signature="e#13142#14355#0" expanded="false" />
+                <element signature="e#14422#14586#0" expanded="false" />
+                <element signature="e#14677#15715#0" expanded="false" />
+                <element signature="e#15930#16069#0" expanded="false" />
+                <element signature="e#16165#19191#0" expanded="false" />
+                <element signature="e#18251#18872#0" expanded="false" />
+                <element signature="e#18269#18522#0" expanded="false" />
+                <element signature="e#18595#18809#0" expanded="false" />
+                <element signature="e#19478#19784#0" expanded="false" />
+                <element signature="e#19927#20077#0" expanded="false" />
+                <element signature="e#20188#20462#0" expanded="false" />
+                <element signature="e#20576#20850#0" expanded="false" />
+                <element signature="e#20961#21236#0" expanded="false" />
+                <element signature="e#21344#21619#0" expanded="false" />
+                <element signature="e#21734#22011#0" expanded="false" />
+                <element signature="e#23654#24348#0" expanded="false" />
+                <element signature="e#24415#24590#0" expanded="false" />
+                <element signature="e#24720#25681#0" expanded="false" />
+                <element signature="e#25748#26206#0" expanded="false" />
+                <element signature="e#33068#33368#0" expanded="false" />
+                <element signature="e#33491#38289#0" expanded="false" />
+                <element signature="e#38357#38643#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plot_alignment_aminoacid_distribution.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_alignment_aminoacid_distribution.py">
+      <file leaf-file-name="compute_pair_weight_score.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/compute_pair_weight_score.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" column="32" lean-forward="false" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+            <state relative-caret-position="367">
+              <caret line="53" column="39" lean-forward="true" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="39" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plot_precision_vs_rank.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_precision_vs_rank.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="465">
+              <caret line="88" column="28" lean-forward="false" selection-start-line="88" selection-start-column="28" selection-end-line="88" selection-end-column="28" />
               <folding>
-                <element signature="e#367#382#0" expanded="true" />
+                <element signature="e#23#38#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="plot_alignment_coverage.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_alignment_coverage.py">
+      <file leaf-file-name="plot_coupling_matrix.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/coupling_matrix_analysis/plot_coupling_matrix.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1071">
-              <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+            <state relative-caret-position="405">
+              <caret line="37" column="59" lean-forward="false" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
               <folding>
-                <element signature="e#361#376#0" expanded="true" />
+                <element signature="e#393#408#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -57,10 +103,91 @@
       <file leaf-file-name="plot_pairwise_aa_freq.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_pairwise_aa_freq.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="570">
-              <caret line="50" column="63" lean-forward="false" selection-start-line="50" selection-start-column="63" selection-end-line="50" selection-end-column="63" />
+            <state relative-caret-position="227">
+              <caret line="20" column="30" lean-forward="false" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
               <folding>
                 <element signature="e#295#310#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="benchmark_utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/benchmark_utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="472">
+              <caret line="391" column="4" lean-forward="false" selection-start-line="391" selection-start-column="4" selection-end-line="391" selection-end-column="4" />
+              <folding>
+                <element signature="e#0#19#0" expanded="true" />
+                <element signature="e#235#1463#0" expanded="false" />
+                <element signature="e#343#1436#0" expanded="false" />
+                <element signature="e#571#888#0" expanded="false" />
+                <element signature="e#1058#1436#0" expanded="false" />
+                <element signature="e#1074#1220#0" expanded="false" />
+                <element signature="e#1524#2504#0" expanded="false" />
+                <element signature="e#1524#1722#1" expanded="false" />
+                <element signature="e#1830#2475#0" expanded="false" />
+                <element signature="e#1853#2010#0" expanded="false" />
+                <element signature="e#2040#2186#0" expanded="false" />
+                <element signature="e#2594#3237#0" expanded="false" />
+                <element signature="e#2738#3206#0" expanded="false" />
+                <element signature="e#2782#2967#0" expanded="false" />
+                <element signature="e#3330#6587#0" expanded="false" />
+                <element signature="e#3516#3587#0" expanded="false" />
+                <element signature="e#3663#3738#0" expanded="false" />
+                <element signature="e#3759#3840#0" expanded="false" />
+                <element signature="e#4020#4119#0" expanded="false" />
+                <element signature="e#4271#4359#0" expanded="false" />
+                <element signature="e#4408#4474#0" expanded="false" />
+                <element signature="e#5051#5188#0" expanded="false" />
+                <element signature="e#5188#5294#0" expanded="false" />
+                <element signature="e#5674#6554#0" expanded="false" />
+                <element signature="e#6257#6554#0" expanded="false" />
+                <element signature="e#6675#7266#0" expanded="false" />
+                <element signature="e#6806#7241#0" expanded="false" />
+                <element signature="e#6839#6982#0" expanded="false" />
+                <element signature="e#7336#9077#0" expanded="false" />
+                <element signature="e#7336#7913#1" expanded="false" />
+                <element signature="e#7971#9052#0" expanded="false" />
+                <element signature="e#8215#8387#0" expanded="false" />
+                <element signature="e#8464#9052#0" expanded="false" />
+                <element signature="e#9140#9630#0" expanded="false" />
+                <element signature="e#9140#9280#1" expanded="false" />
+                <element signature="e#9685#10172#0" expanded="false" />
+                <element signature="e#9685#9770#1" expanded="false" />
+                <element signature="e#10220#10356#1" expanded="false" />
+                <element signature="e#10564#11103#0" expanded="false" />
+                <element signature="e#11180#11618#0" expanded="false" />
+                <element signature="e#11180#11371#1" expanded="false" />
+                <element signature="e#12265#14151#0" expanded="false" />
+                <element signature="e#12311#12350#0" expanded="false" />
+                <element signature="e#12604#12680#0" expanded="false" />
+                <element signature="e#13099#13149#0" expanded="false" />
+                <element signature="e#14266#14277#0" expanded="false" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="io_utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/io_utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="317">
+              <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#9#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="plot_utils.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/plot_utils.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="447">
+              <caret line="600" column="15" lean-forward="false" selection-start-line="600" selection-start-column="15" selection-end-line="600" selection-end-column="15" />
+              <folding>
+                <element signature="e#0#18#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -96,15 +223,19 @@
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/io_utils.py" />
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_contact_map.py" />
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/pdb_utils.py" />
-        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/benchmark_utils.py" />
-        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_precision_vs_rank.py" />
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/entropy_correction/__init__.py" />
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_alignment_entropy.py" />
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/learn_pair_weighted_scoring_matrix.py" />
-        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/compute_pair_weight_score.py" />
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_alignment_coverage.py" />
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_alignment_aminoacid_distribution.py" />
+        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/utils/benchmark_utils.pyc_dis" />
+        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/utils/plot_utils.pyc_dis" />
+        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/coupling_matrix_analysis/plot_coupling_matrix.py" />
         <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_pairwise_aa_freq.py" />
+        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/benchmark_utils.py" />
+        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_precision_vs_rank.py" />
+        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/plot_utils.py" />
+        <option value="$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/compute_pair_weight_score.py" />
         <option value="$PROJECT_DIR$/app_coupling_viz.py" />
       </list>
     </option>
@@ -189,17 +320,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="plotting" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="coupling_viz" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="coupling_viz" />
+              <option name="myItemId" value="entropy_correction" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -292,6 +413,22 @@
       <option name="TEST_TYPE" value="TEST_SCRIPT" />
       <option name="PATTERN" value="" />
       <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Nosetests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="coupling_viz" />
+      <option name="_new_regexPattern" value="&quot;&quot;" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method />
     </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
@@ -408,7 +545,91 @@
       <option name="project" value="LOCAL" />
       <updated>1515489549872</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="fixed bug with L">
+      <created>1515491416102</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1515491416102</updated>
+    </task>
+    <task id="LOCAL-00014" summary="added new functionf for count correction">
+      <created>1515500963914</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1515500963914</updated>
+    </task>
+    <task id="LOCAL-00015" summary="updated files from before file servercrash">
+      <created>1515505269717</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1515505269717</updated>
+    </task>
+    <task id="LOCAL-00016" summary="fixed imports">
+      <created>1515505285601</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1515505285601</updated>
+    </task>
+    <task id="LOCAL-00017" summary="removed old utils folder">
+      <created>1515505394445</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1515505394445</updated>
+    </task>
+    <task id="LOCAL-00018" summary="fixed imports">
+      <created>1515505983403</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1515505983403</updated>
+    </task>
+    <task id="LOCAL-00019" summary="fixed bug with L">
+      <created>1515507102102</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1515507102102</updated>
+    </task>
+    <task id="LOCAL-00020" summary="changed braw input to braw.x_pair input">
+      <created>1515507954997</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1515507954997</updated>
+    </task>
+    <task id="LOCAL-00021" summary="added squared option to compute l2norm function">
+      <created>1515510066518</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1515510066518</updated>
+    </task>
+    <task id="LOCAL-00022" summary="renamed function and added flag entropy">
+      <created>1515573308962</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1515573308962</updated>
+    </task>
+    <task id="LOCAL-00023" summary="introduced method order for plotting">
+      <created>1515586877280</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1515586877280</updated>
+    </task>
+    <task id="LOCAL-00024" summary="added new flag for choosing whether number of proteins is shown in legend">
+      <created>1515587197759</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1515587197759</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -419,11 +640,11 @@
       <window_info id="Debug Logs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32902583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32902583" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Execute Anonymous" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.28838745" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.28838745" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -452,38 +673,25 @@
     <MESSAGE value="new directory entropy correction" />
     <MESSAGE value="added pair weights learning using the entropy correction" />
     <MESSAGE value="use counts in plot function and not alignment&#10;therefore counts do not have to be recomputed all the time" />
-    <option name="LAST_COMMIT_MESSAGE" value="use counts in plot function and not alignment&#10;therefore counts do not have to be recomputed all the time" />
+    <MESSAGE value="added new functionf for count correction" />
+    <MESSAGE value="updated files from before file servercrash" />
+    <MESSAGE value="removed old utils folder" />
+    <MESSAGE value="fixed imports" />
+    <MESSAGE value="fixed bug with L" />
+    <MESSAGE value="changed braw input to braw.x_pair input" />
+    <MESSAGE value="added squared option to compute l2norm function" />
+    <MESSAGE value="renamed function and added flag entropy" />
+    <MESSAGE value="introduced method order for plotting" />
+    <MESSAGE value="added new flag for choosing whether number of proteins is shown in legend" />
+    <option name="LAST_COMMIT_MESSAGE" value="added new flag for choosing whether number of proteins is shown in legend" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="14" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app_coupling_viz.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#24#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/contact_prediction/utils/alignment_utils.py" />
-    <entry file="file://$PROJECT_DIR$/contact_prediction/utils/ext/counts/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/contact_prediction/utils/ext/weighting/__init__.py" />
-    <entry file="file://$PROJECT_DIR$/app_coupling_viz.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="45" lean-forward="false" selection-start-line="17" selection-start-column="45" selection-end-line="17" selection-end-column="45" />
-          <folding>
-            <element signature="e#24#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/contact_prediction/utils/ext/counts/__init__.py" />
     <entry file="file://$PROJECT_DIR$/contact_prediction/utils/ext/weighting/__init__.py" />
     <entry file="file://$PROJECT_DIR$/contact_prediction/utils/alignment_utils.py" />
@@ -493,6 +701,40 @@
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#24#35#0" expanded="true" />
+            <element signature="e#1166#1226#0" expanded="false" />
+            <element signature="e#2847#3127#0" expanded="false" />
+            <element signature="e#2930#3112#0" expanded="false" />
+            <element signature="e#3257#3553#0" expanded="false" />
+            <element signature="e#3356#3538#0" expanded="false" />
+            <element signature="e#4239#5246#0" expanded="false" />
+            <element signature="e#4298#4638#0" expanded="false" />
+            <element signature="e#4779#5119#0" expanded="false" />
+            <element signature="e#9321#10060#0" expanded="false" />
+            <element signature="e#10455#10515#0" expanded="false" />
+            <element signature="e#10874#12739#0" expanded="false" />
+            <element signature="e#11252#11704#0" expanded="false" />
+            <element signature="e#13142#14355#0" expanded="false" />
+            <element signature="e#14422#14586#0" expanded="false" />
+            <element signature="e#14677#15715#0" expanded="false" />
+            <element signature="e#15930#16069#0" expanded="false" />
+            <element signature="e#16165#19191#0" expanded="false" />
+            <element signature="e#18251#18872#0" expanded="false" />
+            <element signature="e#18269#18522#0" expanded="false" />
+            <element signature="e#18595#18809#0" expanded="false" />
+            <element signature="e#19478#19784#0" expanded="false" />
+            <element signature="e#19927#20077#0" expanded="false" />
+            <element signature="e#20188#20462#0" expanded="false" />
+            <element signature="e#20576#20850#0" expanded="false" />
+            <element signature="e#20961#21236#0" expanded="false" />
+            <element signature="e#21344#21619#0" expanded="false" />
+            <element signature="e#21734#22011#0" expanded="false" />
+            <element signature="e#23654#24348#0" expanded="false" />
+            <element signature="e#24415#24590#0" expanded="false" />
+            <element signature="e#24720#25681#0" expanded="false" />
+            <element signature="e#25748#26206#0" expanded="false" />
+            <element signature="e#33068#33368#0" expanded="false" />
+            <element signature="e#33491#38289#0" expanded="false" />
+            <element signature="e#38357#38643#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -507,6 +749,40 @@
           <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="53" />
           <folding>
             <element signature="e#24#35#0" expanded="true" />
+            <element signature="e#1166#1226#0" expanded="false" />
+            <element signature="e#2847#3127#0" expanded="false" />
+            <element signature="e#2930#3112#0" expanded="false" />
+            <element signature="e#3257#3553#0" expanded="false" />
+            <element signature="e#3356#3538#0" expanded="false" />
+            <element signature="e#4239#5246#0" expanded="false" />
+            <element signature="e#4298#4638#0" expanded="false" />
+            <element signature="e#4779#5119#0" expanded="false" />
+            <element signature="e#9321#10060#0" expanded="false" />
+            <element signature="e#10455#10515#0" expanded="false" />
+            <element signature="e#10874#12739#0" expanded="false" />
+            <element signature="e#11252#11704#0" expanded="false" />
+            <element signature="e#13142#14355#0" expanded="false" />
+            <element signature="e#14422#14586#0" expanded="false" />
+            <element signature="e#14677#15715#0" expanded="false" />
+            <element signature="e#15930#16069#0" expanded="false" />
+            <element signature="e#16165#19191#0" expanded="false" />
+            <element signature="e#18251#18872#0" expanded="false" />
+            <element signature="e#18269#18522#0" expanded="false" />
+            <element signature="e#18595#18809#0" expanded="false" />
+            <element signature="e#19478#19784#0" expanded="false" />
+            <element signature="e#19927#20077#0" expanded="false" />
+            <element signature="e#20188#20462#0" expanded="false" />
+            <element signature="e#20576#20850#0" expanded="false" />
+            <element signature="e#20961#21236#0" expanded="false" />
+            <element signature="e#21344#21619#0" expanded="false" />
+            <element signature="e#21734#22011#0" expanded="false" />
+            <element signature="e#23654#24348#0" expanded="false" />
+            <element signature="e#24415#24590#0" expanded="false" />
+            <element signature="e#24720#25681#0" expanded="false" />
+            <element signature="e#25748#26206#0" expanded="false" />
+            <element signature="e#33068#33368#0" expanded="false" />
+            <element signature="e#33491#38289#0" expanded="false" />
+            <element signature="e#38357#38643#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -521,6 +797,40 @@
           <caret line="405" column="24" lean-forward="false" selection-start-line="405" selection-start-column="24" selection-end-line="405" selection-end-column="24" />
           <folding>
             <element signature="e#24#35#0" expanded="true" />
+            <element signature="e#1166#1226#0" expanded="false" />
+            <element signature="e#2847#3127#0" expanded="false" />
+            <element signature="e#2930#3112#0" expanded="false" />
+            <element signature="e#3257#3553#0" expanded="false" />
+            <element signature="e#3356#3538#0" expanded="false" />
+            <element signature="e#4239#5246#0" expanded="false" />
+            <element signature="e#4298#4638#0" expanded="false" />
+            <element signature="e#4779#5119#0" expanded="false" />
+            <element signature="e#9321#10060#0" expanded="false" />
+            <element signature="e#10455#10515#0" expanded="false" />
+            <element signature="e#10874#12739#0" expanded="false" />
+            <element signature="e#11252#11704#0" expanded="false" />
+            <element signature="e#13142#14355#0" expanded="false" />
+            <element signature="e#14422#14586#0" expanded="false" />
+            <element signature="e#14677#15715#0" expanded="false" />
+            <element signature="e#15930#16069#0" expanded="false" />
+            <element signature="e#16165#19191#0" expanded="false" />
+            <element signature="e#18251#18872#0" expanded="false" />
+            <element signature="e#18269#18522#0" expanded="false" />
+            <element signature="e#18595#18809#0" expanded="false" />
+            <element signature="e#19478#19784#0" expanded="false" />
+            <element signature="e#19927#20077#0" expanded="false" />
+            <element signature="e#20188#20462#0" expanded="false" />
+            <element signature="e#20576#20850#0" expanded="false" />
+            <element signature="e#20961#21236#0" expanded="false" />
+            <element signature="e#21344#21619#0" expanded="false" />
+            <element signature="e#21734#22011#0" expanded="false" />
+            <element signature="e#23654#24348#0" expanded="false" />
+            <element signature="e#24415#24590#0" expanded="false" />
+            <element signature="e#24720#25681#0" expanded="false" />
+            <element signature="e#25748#26206#0" expanded="false" />
+            <element signature="e#33068#33368#0" expanded="false" />
+            <element signature="e#33491#38289#0" expanded="false" />
+            <element signature="e#38357#38643#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -567,156 +877,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/plot_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="10" column="93" lean-forward="false" selection-start-line="10" selection-start-column="93" selection-end-line="10" selection-end-column="93" />
-          <folding>
-            <element signature="e#315#1482#0" expanded="false" />
-            <element signature="e#333#420#0" expanded="false" />
-            <element signature="e#1060#1359#0" expanded="false" />
-            <element signature="e#1562#3886#0" expanded="false" />
-            <element signature="e#1734#1992#0" expanded="false" />
-            <element signature="e#2887#2903#0" expanded="false" />
-            <element signature="e#3959#6089#0" expanded="false" />
-            <element signature="e#4128#4705#0" expanded="false" />
-            <element signature="e#4461#4475#0" expanded="false" />
-            <element signature="e#4970#4984#0" expanded="false" />
-            <element signature="e#5169#5641#0" expanded="false" />
-            <element signature="e#5648#5663#0" expanded="false" />
-            <element signature="e#6216#7992#0" expanded="false" />
-            <element signature="e#6216#6457#1" expanded="false" />
-            <element signature="e#6551#6950#0" expanded="false" />
-            <element signature="e#7010#7319#0" expanded="false" />
-            <element signature="e#7332#7802#0" expanded="false" />
-            <element signature="e#7716#7736#0" expanded="false" />
-            <element signature="e#8070#10366#0" expanded="false" />
-            <element signature="e#8070#8462#1" expanded="false" />
-            <element signature="e#8596#8780#0" expanded="false" />
-            <element signature="e#8678#8780#0" expanded="false" />
-            <element signature="e#9106#9315#0" expanded="false" />
-            <element signature="e#9180#9315#0" expanded="false" />
-            <element signature="e#9389#9644#0" expanded="false" />
-            <element signature="e#9657#10241#0" expanded="false" />
-            <element signature="e#10454#11511#0" expanded="false" />
-            <element signature="e#10454#10642#1" expanded="false" />
-            <element signature="e#10736#11008#0" expanded="false" />
-            <element signature="e#11022#11387#0" expanded="false" />
-            <element signature="e#11611#13115#0" expanded="false" />
-            <element signature="e#11611#11793#1" expanded="false" />
-            <element signature="e#11926#12368#0" expanded="false" />
-            <element signature="e#12381#12991#0" expanded="false" />
-            <element signature="e#13200#15486#0" expanded="false" />
-            <element signature="e#13200#13704#1" expanded="false" />
-            <element signature="e#14457#15237#0" expanded="false" />
-            <element signature="e#14711#15033#0" expanded="false" />
-            <element signature="e#15607#21731#0" expanded="false" />
-            <element signature="e#17551#20485#0" expanded="false" />
-            <element signature="e#20063#20102#0" expanded="false" />
-            <element signature="e#21172#21621#0" expanded="false" />
-            <element signature="e#21855#25303#0" expanded="false" />
-            <element signature="e#25438#28996#0" expanded="false" />
-            <element signature="e#27935#28078#0" expanded="false" />
-            <element signature="e#28515#28658#0" expanded="false" />
-            <element signature="e#29137#30574#0" expanded="false" />
-            <element signature="e#29137#29429#1" expanded="false" />
-            <element signature="e#29590#30081#0" expanded="false" />
-            <element signature="e#29722#29785#0" expanded="false" />
-            <element signature="e#30096#30452#0" expanded="false" />
-            <element signature="e#30659#31844#0" expanded="false" />
-            <element signature="e#30659#30675#0" expanded="false" />
-            <element signature="e#31011#31080#0" expanded="false" />
-            <element signature="e#31112#31436#0" expanded="false" />
-            <element signature="e#31455#31758#0" expanded="false" />
-            <element signature="e#31994#34108#0" expanded="false" />
-            <element signature="e#31994#32120#1" expanded="false" />
-            <element signature="e#32322#32765#0" expanded="false" />
-            <element signature="e#32395#32468#0" expanded="false" />
-            <element signature="e#32795#33372#0" expanded="false" />
-            <element signature="e#32824#33372#0" expanded="false" />
-            <element signature="e#33086#33129#0" expanded="false" />
-            <element signature="e#33385#33756#0" expanded="false" />
-            <element signature="e#33788#33924#0" expanded="false" />
-            <element signature="e#34229#35199#0" expanded="false" />
-            <element signature="e#34295#34670#0" expanded="false" />
-            <element signature="e#34547#34636#0" expanded="false" />
-            <element signature="e#34683#35076#0" expanded="false" />
-            <element signature="e#35288#38146#0" expanded="false" />
-            <element signature="e#35288#35515#1" expanded="false" />
-            <element signature="e#35577#37437#0" expanded="false" />
-            <element signature="e#36348#36474#0" expanded="false" />
-            <element signature="e#37450#38024#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/pdb_utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="4" lean-forward="false" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="4" />
           <folding>
             <element signature="e#0#29#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/io_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1125">
-          <caret line="75" column="0" lean-forward="false" selection-start-line="75" selection-start-column="0" selection-end-line="75" selection-end-column="0" />
-          <folding>
-            <element signature="e#0#9#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/benchmark_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="217" column="0" lean-forward="false" selection-start-line="217" selection-start-column="0" selection-end-line="217" selection-end-column="0" />
-          <folding>
-            <element signature="e#191#1419#0" expanded="false" />
-            <element signature="e#299#1392#0" expanded="false" />
-            <element signature="e#528#845#0" expanded="false" />
-            <element signature="e#1014#1392#0" expanded="false" />
-            <element signature="e#1030#1176#0" expanded="false" />
-            <element signature="e#1480#2460#0" expanded="false" />
-            <element signature="e#1480#1678#1" expanded="false" />
-            <element signature="e#1786#2431#0" expanded="false" />
-            <element signature="e#1809#1966#0" expanded="false" />
-            <element signature="e#1996#2142#0" expanded="false" />
-            <element signature="e#2550#3191#0" expanded="false" />
-            <element signature="e#2692#3160#0" expanded="false" />
-            <element signature="e#2736#2921#0" expanded="false" />
-            <element signature="e#3284#6541#0" expanded="false" />
-            <element signature="e#3470#3541#0" expanded="false" />
-            <element signature="e#3617#3692#0" expanded="false" />
-            <element signature="e#3713#3794#0" expanded="false" />
-            <element signature="e#3974#4073#0" expanded="false" />
-            <element signature="e#4225#4313#0" expanded="false" />
-            <element signature="e#4362#4428#0" expanded="false" />
-            <element signature="e#5005#5142#0" expanded="false" />
-            <element signature="e#5142#5248#0" expanded="false" />
-            <element signature="e#5628#6508#0" expanded="false" />
-            <element signature="e#6211#6508#0" expanded="false" />
-            <element signature="e#6629#7163#0" expanded="false" />
-            <element signature="e#6739#7138#0" expanded="false" />
-            <element signature="e#6772#6915#0" expanded="false" />
-            <element signature="e#7233#8972#0" expanded="false" />
-            <element signature="e#7233#7810#1" expanded="false" />
-            <element signature="e#7868#8947#0" expanded="false" />
-            <element signature="e#8112#8284#0" expanded="false" />
-            <element signature="e#8359#8947#0" expanded="false" />
-            <element signature="e#9040#9530#0" expanded="false" />
-            <element signature="e#9040#9180#1" expanded="false" />
-            <element signature="e#9585#10072#0" expanded="false" />
-            <element signature="e#9585#9670#1" expanded="false" />
-            <element signature="e#10118#10387#0" expanded="false" />
-            <element signature="e#10118#10254#1" expanded="false" />
-            <element signature="e#10446#10849#0" expanded="false" />
-            <element signature="e#10446#10624#1" expanded="false" />
-            <element signature="e#10911#11332#0" expanded="false" />
-            <element signature="e#10911#11102#1" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -731,31 +897,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_precision_vs_rank.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-139">
-          <caret line="8" column="5" lean-forward="false" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
-          <folding>
-            <element signature="e#1469#3414#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/compute_pair_weight_score.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="83" lean-forward="false" selection-start-line="25" selection-start-column="83" selection-end-line="25" selection-end-column="83" />
-          <folding>
-            <element signature="e#329#344#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -775,50 +921,223 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/alignment_utils.py">
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_alignment_coverage.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="915">
-          <caret line="67" column="24" lean-forward="false" selection-start-line="67" selection-start-column="4" selection-end-line="67" selection-end-column="24" />
-          <folding />
+        <state relative-caret-position="1071">
+          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+          <folding>
+            <element signature="e#361#376#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_alignment_aminoacid_distribution.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" column="32" lean-forward="false" selection-start-line="26" selection-start-column="32" selection-end-line="26" selection-end-column="32" />
+        <state relative-caret-position="300">
+          <caret line="20" column="33" lean-forward="false" selection-start-line="20" selection-start-column="33" selection-end-line="20" selection-end-column="33" />
           <folding>
             <element signature="e#367#382#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/utils/benchmark_utils.pyc_dis">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1005">
+          <caret line="67" column="0" lean-forward="true" selection-start-line="67" selection-start-column="0" selection-end-line="67" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/utils/plot_utils.pyc_dis">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-269">
+          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/utils/alignment_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/alignment_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/ccmraw.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-630">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#14#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_pairwise_aa_freq.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="570">
-          <caret line="50" column="63" lean-forward="false" selection-start-line="50" selection-start-column="63" selection-end-line="50" selection-end-column="63" />
+        <state relative-caret-position="227">
+          <caret line="20" column="30" lean-forward="false" selection-start-line="20" selection-start-column="30" selection-end-line="20" selection-end-column="30" />
           <folding>
             <element signature="e#295#310#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_alignment_coverage.py">
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/coupling_matrix_analysis/plot_coupling_matrix.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1071">
-          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
+        <state relative-caret-position="405">
+          <caret line="37" column="59" lean-forward="false" selection-start-line="37" selection-start-column="59" selection-end-line="37" selection-end-column="59" />
           <folding>
-            <element signature="e#361#376#0" expanded="true" />
+            <element signature="e#393#408#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/plotting/plot_precision_vs_rank.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="465">
+          <caret line="88" column="28" lean-forward="false" selection-start-line="88" selection-start-column="28" selection-end-line="88" selection-end-column="28" />
+          <folding>
+            <element signature="e#23#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/plot_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="447">
+          <caret line="600" column="15" lean-forward="false" selection-start-line="600" selection-start-column="15" selection-end-line="600" selection-end-column="15" />
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/entropy_correction/compute_pair_weight_score.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="367">
+          <caret line="53" column="39" lean-forward="true" selection-start-line="53" selection-start-column="11" selection-end-line="53" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/benchmark_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="472">
+          <caret line="391" column="4" lean-forward="false" selection-start-line="391" selection-start-column="4" selection-end-line="391" selection-end-column="4" />
+          <folding>
+            <element signature="e#0#19#0" expanded="true" />
+            <element signature="e#235#1463#0" expanded="false" />
+            <element signature="e#343#1436#0" expanded="false" />
+            <element signature="e#571#888#0" expanded="false" />
+            <element signature="e#1058#1436#0" expanded="false" />
+            <element signature="e#1074#1220#0" expanded="false" />
+            <element signature="e#1524#2504#0" expanded="false" />
+            <element signature="e#1524#1722#1" expanded="false" />
+            <element signature="e#1830#2475#0" expanded="false" />
+            <element signature="e#1853#2010#0" expanded="false" />
+            <element signature="e#2040#2186#0" expanded="false" />
+            <element signature="e#2594#3237#0" expanded="false" />
+            <element signature="e#2738#3206#0" expanded="false" />
+            <element signature="e#2782#2967#0" expanded="false" />
+            <element signature="e#3330#6587#0" expanded="false" />
+            <element signature="e#3516#3587#0" expanded="false" />
+            <element signature="e#3663#3738#0" expanded="false" />
+            <element signature="e#3759#3840#0" expanded="false" />
+            <element signature="e#4020#4119#0" expanded="false" />
+            <element signature="e#4271#4359#0" expanded="false" />
+            <element signature="e#4408#4474#0" expanded="false" />
+            <element signature="e#5051#5188#0" expanded="false" />
+            <element signature="e#5188#5294#0" expanded="false" />
+            <element signature="e#5674#6554#0" expanded="false" />
+            <element signature="e#6257#6554#0" expanded="false" />
+            <element signature="e#6675#7266#0" expanded="false" />
+            <element signature="e#6806#7241#0" expanded="false" />
+            <element signature="e#6839#6982#0" expanded="false" />
+            <element signature="e#7336#9077#0" expanded="false" />
+            <element signature="e#7336#7913#1" expanded="false" />
+            <element signature="e#7971#9052#0" expanded="false" />
+            <element signature="e#8215#8387#0" expanded="false" />
+            <element signature="e#8464#9052#0" expanded="false" />
+            <element signature="e#9140#9630#0" expanded="false" />
+            <element signature="e#9140#9280#1" expanded="false" />
+            <element signature="e#9685#10172#0" expanded="false" />
+            <element signature="e#9685#9770#1" expanded="false" />
+            <element signature="e#10220#10356#1" expanded="false" />
+            <element signature="e#10564#11103#0" expanded="false" />
+            <element signature="e#11180#11618#0" expanded="false" />
+            <element signature="e#11180#11371#1" expanded="false" />
+            <element signature="e#12265#14151#0" expanded="false" />
+            <element signature="e#12311#12350#0" expanded="false" />
+            <element signature="e#12604#12680#0" expanded="false" />
+            <element signature="e#13099#13149#0" expanded="false" />
+            <element signature="e#14266#14277#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/../../contact_pred_rescue/contact_prediction/contact_prediction/utils/io_utils.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="317">
+          <caret line="22" column="0" lean-forward="false" selection-start-line="22" selection-start-column="0" selection-end-line="22" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#9#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app_coupling_viz.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="589" column="0" lean-forward="true" selection-start-line="589" selection-start-column="0" selection-end-line="589" selection-end-column="0" />
+        <state relative-caret-position="532">
+          <caret line="995" column="116" lean-forward="false" selection-start-line="995" selection-start-column="116" selection-end-line="995" selection-end-column="116" />
           <folding>
             <element signature="e#24#35#0" expanded="true" />
+            <element signature="e#1166#1226#0" expanded="false" />
+            <element signature="e#2847#3127#0" expanded="false" />
+            <element signature="e#2930#3112#0" expanded="false" />
+            <element signature="e#3257#3553#0" expanded="false" />
+            <element signature="e#3356#3538#0" expanded="false" />
+            <element signature="e#4239#5246#0" expanded="false" />
+            <element signature="e#4298#4638#0" expanded="false" />
+            <element signature="e#4779#5119#0" expanded="false" />
+            <element signature="e#9321#10060#0" expanded="false" />
+            <element signature="e#10455#10515#0" expanded="false" />
+            <element signature="e#10874#12739#0" expanded="false" />
+            <element signature="e#11252#11704#0" expanded="false" />
+            <element signature="e#13142#14355#0" expanded="false" />
+            <element signature="e#14422#14586#0" expanded="false" />
+            <element signature="e#14677#15715#0" expanded="false" />
+            <element signature="e#15930#16069#0" expanded="false" />
+            <element signature="e#16165#19191#0" expanded="false" />
+            <element signature="e#18251#18872#0" expanded="false" />
+            <element signature="e#18269#18522#0" expanded="false" />
+            <element signature="e#18595#18809#0" expanded="false" />
+            <element signature="e#19478#19784#0" expanded="false" />
+            <element signature="e#19927#20077#0" expanded="false" />
+            <element signature="e#20188#20462#0" expanded="false" />
+            <element signature="e#20576#20850#0" expanded="false" />
+            <element signature="e#20961#21236#0" expanded="false" />
+            <element signature="e#21344#21619#0" expanded="false" />
+            <element signature="e#21734#22011#0" expanded="false" />
+            <element signature="e#23654#24348#0" expanded="false" />
+            <element signature="e#24415#24590#0" expanded="false" />
+            <element signature="e#24720#25681#0" expanded="false" />
+            <element signature="e#25748#26206#0" expanded="false" />
+            <element signature="e#33068#33368#0" expanded="false" />
+            <element signature="e#33491#38289#0" expanded="false" />
+            <element signature="e#38357#38643#0" expanded="false" />
           </folding>
         </state>
       </provider>
