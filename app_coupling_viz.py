@@ -51,11 +51,7 @@ app.layout = html.Div([
             value=1,
             id='tabs'
         ),
-        html.Div(id='tab-output-1',style={'display': 'block'}),
-        html.Div(id='tab-output-2',style={'display': 'none'}),
-        html.Div(id='tab-output-3',style={'display': 'none'}),
-        html.Div(id='tab-output-4',style={'display': 'none'}),
-        html.Div(id='tab-output-5',style={'display': 'none'}),
+        html.Div(id='tab-output',style={'display': 'block'}),
     ], style={'position': 'absolute', 'left': '25%', 'top': '15%', 'width': '63%', 'height': '80%'}),
 
 
@@ -63,71 +59,68 @@ app.layout = html.Div([
 
     html.Div([
 
+        html.Label("Load example data:  ", style={'font-size': '16px'}),
+        dcc.RadioItems(
+            id='example_data',
+            options=[
+                {'label': 'none', 'value': 'no'},
+                {'label': 'protein 1mkc_A_00', 'value': '1mkcA00'},
+                {'label': 'protein 1c75_A_00', 'value': '1c75A00'}
+            ],
+            value='no',
+            labelStyle={'display': 'block'}
+        ),
+        html.Br(),
+        html.Label(" or upload your own data:  ", style={'font-size': '16px'}),
         dcc.Upload(
             id='upload-alignment',
             children=[
                 html.Button('Upload Alignment File',
-                            style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color' : 'black', 'font-size': '16px', 'padding': '10px 20px', 'border-radius': '4px'})
+                            style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color' : 'black',
+                                   'font-size': '16px', 'padding': '5px 15px', 'border-radius': '4px'})
             ],
             multiple=False
         ),
-        html.Br(),
         dcc.Upload(
             id='upload-pdb',
             children=[
                 html.Button('Upload PDB File',
                             style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color': 'black',
-                                   'font-size': '16px', 'padding': '15px 32px', 'border-radius': '4px'})
+                                   'font-size': '16px', 'padding': '5px 15px', 'border-radius': '4px'})
             ],
             multiple=False
         ),
-        html.Br(),
         dcc.Upload(
             id='upload-braw',
             children=[
                 html.Button('Upload binary raw coupling File',
                             style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color': 'black',
-                                   'font-size': '16px', 'padding': '15px 32px', 'border-radius': '4px'})
+                                   'font-size': '16px', 'padding': '5px 15px', 'border-radius': '4px'})
             ],
             multiple=False
         ),
+
         html.Br(),
-        html.Label("or load example data:  ", style={'font-size': '16px'}),
-                dcc.RadioItems(
-                    id='example_data',
-                    options=[
-                        {'label': 'none', 'value': 'no'},
-                        {'label': 'protein 1mkc_A_00', 'value': '1mkcA00'},
-                        {'label': 'protein 1c75_A_00', 'value': '1c75A00'}
-                    ],
-                    value='no',
-                    labelStyle={'display': 'block'}
-                ),
         html.Hr(),
         html.Br(),
 
+
+
+
         html.Div(
-            id='residue_pair_ids',
+            id='menu-residue-pairs',
             children = [
-                html.Div(
-                    children = [
-                        html.Label("Residue Pair i:  ", style={'font-size': '16px'}),
-                        dcc.Dropdown(
-                            options=[{'label': str(i), 'value': str(i), 'disabled': 'True'} for i in range(1,2)],
-                            id="res_i",
-                            value="1")
-                    ],
-                    style={'display': 'inline', 'width': '10'}
+                html.Label("Residue Pair i:  ", style={'font-size': '16px'}),
+                dcc.Dropdown(
+                    options=[{'label': str(i), 'value': str(i), 'disabled': 'True'} for i in range(1,2)],
+                    id="res_i",
+                    value="1"
                 ),
-                html.Div(
-                    children = [
-                        html.Label("Residue Pair j:  ", style={'font-size': '16px'}),
-                        dcc.Dropdown(
-                            options=[{'label': str(i), 'value': str(i), 'disabled': 'True'} for i in range(2,3)],
-                            id="res_j",
-                            value="2")
-                    ],
-                    style={'display': 'inline', 'max-width': '10'}
+                html.Label("Residue Pair j:  ", style={'font-size': '16px'}),
+                dcc.Dropdown(
+                    options=[{'label': str(i), 'value': str(i), 'disabled': 'True'} for i in range(2,3)],
+                    id="res_j",
+                    value="2"
                 ),
                 html.Br()
             ],
@@ -135,7 +128,7 @@ app.layout = html.Div([
         ),
 
         html.Div(
-            id="contact_score_div",
+            id="menu-tab-3",
             children=[
                 html.Label("Compute basic contact score from couplings as:  ", style={'font-size': '16px'}),
                 dcc.RadioItems(
@@ -147,37 +140,7 @@ app.layout = html.Div([
                     value='frobenius',
                     labelStyle={'display': 'block'}
                 ),
-                html.Br()
-            ],
-            style={'display': 'none'}
-        ),
-
-        html.Div(
-            id="coupling_matrix_options",
-            children = [
-                html.Label("Apply local correction to coupling values:  ", style={'font-size': '16px'}),
-                dcc.RadioItems(
-                    id='coupling_matrix_correction',
-                    options=[
-                        {'label': 'no correction', 'value': 'couplings with no correction'},
-                        {'label': 'entropy corrected squared couplings', 'value': 'entropy corrected squared couplings'},
-                        {'label': 'count corrected squared couplings', 'value': 'count corrected squared couplings'},
-                        {'label': 'pair weighted, entropy corrected squared couplings', 'value': 'pair weighted, entropy corrected squared couplings'},
-                        {'label': 'only entropy correction (no square root)', 'value': 'entropy correction (no square root)'},
-                        {'label': 'only count correction (no square root)', 'value': 'count correction (no square root)'},
-                        {'label': 'only pair weights', 'value': 'only pair weights'}
-                    ],
-                    value='couplings with no correction',
-                    labelStyle={'display': 'block'}
-                ),
-                html.Br()
-            ],
-            style={'display': 'none'}
-        ),
-
-        html.Div(
-            id="contact_map_correction",
-            children = [
+                html.Br(),
                 html.Label("Apply correction to contact score:  ", style={'font-size': '16px'}),
                 dcc.RadioItems(
                     id='contact_score_correction',
@@ -200,24 +163,48 @@ app.layout = html.Div([
                     values=[],
                     labelStyle={'display': 'inline-block'}
                 ),
-                html.Hr(),
-                html.Div("Entropy and Count Correction are defined either as:"),
-                html.Div(" η• √(sum_a,b u_ia•u_jb) when using Frobenius Norm Score or"),
-                html.Div(" η• sum_a,b u_ia•u_jb when using summed squares Score"),
-                html.Div("with u_ia = sqrt(neff)/lambda_w q_ia * log(qia) for Entropy Correction"),
-                html.Div("  or u_ia = sqrt(neff)/lambda_w q_ia * (1 - qia) for Count Correction"),
+                # html.Hr(),
+                # html.Div("Entropy and Count Correction are defined either as:"),
+                # html.Div(" η• √(sum_a,b u_ia•u_jb) when using Frobenius Norm Score or"),
+                # html.Div(" η• sum_a,b u_ia•u_jb when using summed squares Score"),
+                # html.Div("with u_ia = sqrt(neff)/lambda_w q_ia * log(qia) for Entropy Correction"),
+                # html.Div("  or u_ia = sqrt(neff)/lambda_w q_ia * (1 - qia) for Count Correction"),
+                # html.Br(),
+                # html.Div("Pair Weighted Entropy Correction:"),
+                # html.Div("sum_a,b beta_ab (w_ijab² - η•u_ia•u_jb)"),
+                # html.Hr(),
                 html.Br(),
-                html.Div("Pair Weighted Entropy Correction:"),
-                html.Div("sum_a,b beta_ab (w_ijab² - η•u_ia•u_jb)"),
-                html.Hr(),
-                html.Br()
+
             ],
             style={'display': 'none'}
         ),
 
         html.Div(
-            id='contact_map_options',
+            id="menu-tab-5",
             children = [
+                html.Br(),
+                html.Label("Apply local correction to coupling values:  ", style={'font-size': '16px'}),
+                dcc.RadioItems(
+                    id='coupling_matrix_correction',
+                    options=[
+                        {'label': 'no correction', 'value': 'couplings with no correction'},
+                        {'label': 'entropy corrected squared couplings', 'value': 'entropy corrected squared couplings'},
+                        {'label': 'count corrected squared couplings', 'value': 'count corrected squared couplings'},
+                        {'label': 'pair weighted, entropy corrected squared couplings', 'value': 'pair weighted, entropy corrected squared couplings'},
+                        {'label': 'only entropy correction (no square root)', 'value': 'entropy correction (no square root)'},
+                        {'label': 'only count correction (no square root)', 'value': 'count correction (no square root)'},
+                        {'label': 'only pair weights', 'value': 'only pair weights'}
+                    ],
+                    value='couplings with no correction',
+                    labelStyle={'display': 'block'}
+                ),
+            ],
+            style={'display': 'none'}
+        ),
+
+        html.Div(
+            id="seq-sep-contact-thresh",
+            children=[
                 html.Label("Sequence separation:  ", style={'font-size': '16px'}),
                 dcc.Slider(
                     id='sequence_separation',
@@ -225,7 +212,7 @@ app.layout = html.Div([
                     max=12,
                     step=2,
                     value=6,
-                    marks={i: str(i) for i in range(2,12+1,2)}
+                    marks={i: str(i) for i in range(2, 12 + 1, 2)}
                 ),
                 html.Br(),
                 html.Label("Contact Threshold:  ", style={'font-size': '16px'}),
@@ -235,10 +222,18 @@ app.layout = html.Div([
                     max=14,
                     step=2,
                     value=8,
-                    marks={i: str(i) for i in range(4,14+1,2)}
+                    marks={i: str(i) for i in range(4, 14 + 1, 2)}
                 )
             ],
             style={'display': 'none'}
+        ),
+
+        html.Br(),
+        html.Button(
+            'Go',
+            id='go',
+            style={'background-color': 'white', 'border': '2px solid #4CAF50', 'color': 'black', 'font-size': '16px',
+                   'padding': '10px 20px', 'border-radius': '4px'}
         )
 
     ], style={'position': 'absolute', 'left': '3%', 'top': '3%', 'width' : '20%'}),
@@ -393,9 +388,8 @@ def load_braw_data(braw_contents_list, braw_name, example_protein):
     return json.dumps(protein_braw_dict)
 
 
-
 ############################################################
-# Reactivity - Stats
+# Reactivity - Statistics
 ############################################################
 
 @app.callback(Output('alignment_stats', 'children'),
@@ -483,69 +477,35 @@ def update_alignment_stats(protein_alignment_json, protein_pdb_json, protein_bra
 # Menu display according to Tab
 ############################################################
 
-@app.callback(Output('res_i', 'options'), [Input('protein_alignment', 'children')])
-def update_res_i(protein_alignment_json):
+@app.callback(Output('menu-residue-pairs', 'children'), [Input('protein_alignment', 'children')])
+def update_residue_pairs(protein_alignment_json):
+
     protein_alignment_dict=json.loads(protein_alignment_json)
-
+    L = 3
     if 'L' in protein_alignment_dict:
-        dropdown_options = [{'label': str(i), 'value': str(i)} for i in range(1, protein_alignment_dict['L']-1)]
-    else:
-        dropdown_options = [{'label': '1', 'value': '1'}]
-    return(dropdown_options)
+        L = protein_alignment_dict['L']
+
+    children = [
+        html.Label("Residue Pair i:  ", style={'font-size': '16px'}),
+        dcc.Dropdown(
+            options=[{'label': str(i), 'value': str(i)} for i in range(1, L)],
+            id="res_i",
+            value="1"
+        ),
+        html.Label("Residue Pair j:  ", style={'font-size': '16px'}),
+        dcc.Dropdown(
+            options=[{'label': str(i), 'value': str(i)} for i in range(2, L+1)],
+            id="res_j",
+            value=str(L)
+        )
+    ]
+
+    return children
 
 
-@app.callback(Output('res_j', 'options'), [Input('res_i', 'value'), Input('res_i', 'options')])
-def update_res_j(value, res_i_options):
-    L = len(res_i_options)
-    dropdown_options = [{'label': str(i), 'value': str(i)} for i in range(int(value)+1, int(L)+2)]
-    return(dropdown_options)
 
-
-
-@app.callback(Output('contact_score_div', 'style'), [Input('tabs', 'value')])
-def adjust_menu(value):
-
-    if value == 1:
-        return {'display': 'none'}
-    elif value == 2:
-        return {'display': 'none'}
-    elif value == 3:
-        return {'display': 'block'}
-    elif value == 4:
-        return {'display': 'none'}
-    elif value == 5:
-        return {'display': 'none'}
-
-@app.callback(Output('contact_map_correction', 'style'), [Input('tabs', 'value')])
-def adjust_menu(value):
-
-    if value == 1:
-        return {'display': 'none'}
-    elif value == 2:
-        return {'display': 'none'}
-    elif value == 3:
-        return {'display': 'block'}
-    elif value == 4:
-        return {'display': 'none'}
-    elif value == 5:
-        return {'display': 'none'}
-
-@app.callback(Output('contact_map_options', 'style'), [Input('tabs', 'value')])
-def adjust_menu(value):
-
-    if value == 1:
-        return {'display': 'none'}
-    elif value == 2:
-        return {'display': 'none'}
-    elif value == 3:
-        return {'display': 'block'}
-    elif value == 4:
-        return {'display': 'block'}
-    elif value == 5:
-        return {'display': 'none'}
-
-@app.callback(Output('residue_pair_ids', 'style'), [Input('tabs', 'value')])
-def adjust_menu(value):
+@app.callback(Output('menu-residue-pairs', 'style'), [Input('tabs', 'value')])
+def adjust_menu_2(value):
 
     if value == 1:
         return {'display': 'none'}
@@ -558,8 +518,36 @@ def adjust_menu(value):
     elif value == 5:
         return {'display': 'block'}
 
-@app.callback(Output('coupling_matrix_options', 'style'), [Input('tabs', 'value')])
-def adjust_menu(value):
+@app.callback(Output('menu-tab-3', 'style'), [Input('tabs', 'value')])
+def adjust_menu_3(value):
+
+    if value == 1:
+        return {'display': 'none'}
+    elif value == 2:
+        return {'display': 'none'}
+    elif value == 3:
+        return {'display': 'block'}
+    elif value == 4:
+        return {'display': 'none'}
+    elif value == 5:
+        return {'display': 'none'}
+
+@app.callback(Output('seq-sep-contact-thresh', 'style'), [Input('tabs', 'value')])
+def adjust_menu_4(value):
+
+    if value == 1:
+        return {'display': 'none'}
+    elif value == 2:
+        return {'display': 'none'}
+    elif value == 3:
+        return {'display': 'block'}
+    elif value == 4:
+        return {'display': 'block'}
+    elif value == 5:
+        return {'display': 'none'}
+
+@app.callback(Output('menu-tab-5', 'style'), [Input('tabs', 'value')])
+def adjust_menu_5(value):
 
     if value == 1:
         return {'display': 'none'}
@@ -573,54 +561,31 @@ def adjust_menu(value):
         return {'display': 'block'}
 
 
-############################################################
-# Switch Tab Visibility
-############################################################
 
-@app.callback(Output('tab-output-1', 'style'), [Input('tabs', 'value')])
-def switch_visibility_tab_1(value):
-    if value == 1:
-        return {'display': 'block', 'align':'center'}
-    else:
-        return {'display': 'none'}
-
-@app.callback(Output('tab-output-2', 'style'), [Input('tabs', 'value')])
-def switch_visibility_tab_2(value):
-    if value == 2:
-        return {'display': 'block', 'align':'center'}
-    else:
-        return {'display': 'none'}
-
-@app.callback(Output('tab-output-3', 'style'), [Input('tabs', 'value')])
-def switch_visibility_tab_3(value):
-    if value == 3:
-        return {'display': 'block', 'align':'center'}
-    else:
-        return {'display': 'none'}
-
-@app.callback(Output('tab-output-4', 'style'), [Input('tabs', 'value')])
-def switch_visibility_tab_4(value):
-    if value == 4:
-        return {'display': 'block', 'align': 'center'}
-    else:
-        return {'display': 'none'}
-
-@app.callback(Output('tab-output-5', 'style'), [Input('tabs', 'value')])
-def switch_visibility_tab_5(value):
-        if value == 5:
-            return {'display': 'block', 'align': 'center'}
-        else:
-            return {'display': 'none'}
 ############################################################
 # Tab Display
 ############################################################
 
-
-@app.callback(Output('tab-output-1', 'children'),
+@app.callback(Output('tab-output', 'children'),
               [Input('tabs', 'value'),
-               Input('protein_alignment', 'children')])
-def display_tab_1(value, protein_alignment_json):
-
+               Input('go', 'n_clicks')],
+              [State('protein_alignment', 'children'),
+               State('protein_pdb', 'children'),
+               State('protein_braw', 'children'),
+               State('res_i', 'value'),
+               State('res_j', 'value'),
+               State('contact_score', 'value'),
+               State('contact_score_correction', 'value'),
+               State('correction_only', 'values'),
+               State('sequence_separation', 'value'),
+               State('contact_threshold', 'value'),
+               State('coupling_matrix_correction', 'value')
+               ])
+def display_tab_(
+        value, n_clicks,
+        protein_alignment_json, protein_pdb_json, protein_braw_json,
+        residue_i_str, residue_j_str, contact_score,  correction, plot_correction_only,
+        seq_sep, contact_threshold, coupling_matrix_correction):
 
     if value == 1 and protein_alignment_json:
 
@@ -640,15 +605,7 @@ def display_tab_1(value, protein_alignment_json):
         return html.Div([h2, graph_element], style={'text-align': 'center'})
 
 
-@app.callback(Output('tab-output-2', 'children'),
-              [Input('tabs', 'value'),
-               Input('protein_alignment', 'children'),
-               Input('res_i', 'value'),
-               Input('res_j', 'value')
-               ])
-def display_tab_2(value, protein_alignment_json, residue_i, residue_j):
-
-    if value == 2 and protein_alignment_json:
+    elif value == 2 and protein_alignment_json:
 
         protein_alignment_dict = json.loads(protein_alignment_json)
         figure = {}
@@ -661,32 +618,17 @@ def display_tab_2(value, protein_alignment_json, residue_i, residue_j):
             protein_name = protein_alignment_dict['protein_name']
 
             figure = pairwise_aa_plot.plot_aa_frequencies(
-                single_counts, pairwise_counts, protein_name, int(residue_i), int(residue_j), plot_frequencies=True,
+                single_counts, pairwise_counts, protein_name, int(residue_i_str), int(residue_j_str), plot_frequencies=True,
                 plot_type="heatmap", plot_out=None)
 
 
-        header = html.H3("Single and Pairwise Amino Acid Frequencies for Residue Pair {0} - {1}".format(residue_i, residue_j))
+        header = html.H3("Single and Pairwise Amino Acid Frequencies for Residue Pair {0} - {1}".format(residue_i_str, residue_j_str))
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
 
         return html.Div([header, graph_element], style={'text-align': 'center'})
 
 
-@app.callback(Output('tab-output-3', 'children'),
-              [Input('tabs', 'value'),
-               Input('protein_alignment', 'children'),
-               Input('protein_pdb', 'children'),
-               Input('protein_braw', 'children'),
-               Input('contact_score', 'value'),
-               Input('contact_score_correction', 'value'),
-               Input('correction_only', 'values'),
-               Input('sequence_separation', 'value'),
-               Input('contact_threshold', 'value')
-               ])
-def display_tab_3(value, protein_alignment_json, protein_pdb_json, protein_braw_json,
-                  contact_score, correction, plot_correction_only,
-                  seq_sep, contact_threshold):
-
-    if value == 3 and protein_braw_json and protein_alignment_json and protein_pdb_json:
+    elif value == 3 and protein_braw_json and protein_alignment_json and protein_pdb_json:
 
         protein_braw = json.loads(protein_braw_json)
         protein_alignment = json.loads(protein_alignment_json)
@@ -792,249 +734,230 @@ def display_tab_3(value, protein_alignment_json, protein_pdb_json, protein_braw_
 
         return html.Div([header, subheader, graph_element], style={'text-align': 'center'})
 
+    elif value == 4:
+        if protein_braw_json and protein_pdb_json and protein_alignment_json:
 
-@app.callback(Output('tab-output-4', 'children'),
-              [Input('tabs', 'value'),
-               Input('protein_braw', 'children'),
-               Input('protein_pdb', 'children'),
-               Input('protein_alignment', 'children'),
-               Input('sequence_separation', 'value'),
-               Input('contact_threshold', 'value')
-               ])
-def display_tab_4(value, protein_braw_json, protein_pdb_json, protein_alignment_json, seq_sep, contact_threshold):
+            protein_braw = json.loads(protein_braw_json)
+            L = u.find_dict_key('ncol', protein_braw['meta']['workflow'][0])
+            neff = u.find_dict_key('neff', protein_braw['meta']['workflow'][0])
+            lambda_w = u.find_dict_key('lambda_pair', protein_braw['meta']['workflow'][0])
+            braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
 
+            protein_pdb = json.loads(protein_pdb_json)
+            observed_distances = np.array(protein_pdb['distance_map']).reshape((L,L))
 
-    if value == 4 and protein_braw_json and protein_pdb_json and protein_alignment_json:
-
-        protein_braw = json.loads(protein_braw_json)
-        L = u.find_dict_key('ncol', protein_braw['meta']['workflow'][0])
-        neff = u.find_dict_key('neff', protein_braw['meta']['workflow'][0])
-        lambda_w = u.find_dict_key('lambda_pair', protein_braw['meta']['workflow'][0])
-        braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
-
-        protein_pdb = json.loads(protein_pdb_json)
-        observed_distances = np.array(protein_pdb['distance_map']).reshape((L,L))
-
-        protein_alignment = json.loads(protein_alignment_json)
-        single_freq = np.array(protein_alignment['single_freq']).reshape((L,20))
+            protein_alignment = json.loads(protein_alignment_json)
+            single_freq = np.array(protein_alignment['single_freq']).reshape((L,20))
 
 
-        dict_scores = {}
-        ordered_methods = []
-        for contact_score in ["frobenius", "squared sum"]:
-            for correction in ["apc", "no", "entropy correction", "count correction", "pair weighted entropy correction"]: #extend computation of corrections
+            dict_scores = {}
+            ordered_methods = []
+            for contact_score in ["frobenius", "squared sum"]:
+                for correction in ["apc", "no", "entropy correction", "count correction", "pair weighted entropy correction"]: #extend computation of corrections
 
-                if contact_score == "frobenius":
-                    if correction == "entropy correction":
-                        mat = bu.compute_corrected_mat(
-                            braw_x_pair, single_freq, neff, lambda_w, entropy=True, squared=False)
-                        dict_scores[contact_score + " - " + correction] = mat
-                        ordered_methods.append(contact_score + " - " + correction)
-                    elif correction == "count correction":
-                        mat = bu.compute_corrected_mat(
-                            braw_x_pair, single_freq, neff, lambda_w, entropy=False, squared=False)
-                        dict_scores[contact_score + " - " + correction] = mat
-                        ordered_methods.append(contact_score + " - " + correction)
-                    elif correction == "apc":
-                        mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=True, squared=False)
-                        dict_scores[contact_score + " - " + correction] = mat
-                        ordered_methods.append(contact_score + " - " + correction)
-                    elif correction == "no":
-                        mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=False)
-                        dict_scores[contact_score + " - " + correction] = mat
-                        ordered_methods.append(contact_score + " - " + correction)
-                elif contact_score == 'squared sum':
-                    if correction == "entropy correction":
-                        mat = bu.compute_corrected_mat(
-                            braw_x_pair, single_freq, neff, lambda_w, entropy=True, squared=True)
-                        dict_scores[contact_score + " - " + correction] = mat
-                        ordered_methods.append(contact_score + " - " + correction)
-                    elif correction == "count correction":
-                        mat = bu.compute_corrected_mat(
-                            braw_x_pair, single_freq, neff, lambda_w, entropy=False, squared=True)
-                        dict_scores[contact_score + " - " + correction] = mat
-                        ordered_methods.append(contact_score + " - " + correction)
-                    elif correction == "pair weighted entropy correction":
-                        beta = np.loadtxt("./example_data/pair_weights_20000_balance5_contactthr8_noncontactthr20_diversitythr0.3_regcoeff10.txt")
-                        uij, eta = bu.compute_correction(
-                            single_freq, neff, lambda_w, braw_x_pair, entropy=True, squared=True)
-                        braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
-                        couplings_corrected = braw_sq - eta * uij
-                        mat = np.sum(
-                            beta[np.newaxis, np.newaxis, :, :] * couplings_corrected[:, :, :20, :20],
-                            axis=(3, 2)
-                        )
-                        dict_scores[contact_score + " - " + correction] = mat
-                        ordered_methods.append(contact_score + " - " + correction)
+                    if contact_score == "frobenius":
+                        if correction == "entropy correction":
+                            mat = bu.compute_corrected_mat(
+                                braw_x_pair, single_freq, neff, lambda_w, entropy=True, squared=False)
+                            dict_scores[contact_score + " - " + correction] = mat
+                            ordered_methods.append(contact_score + " - " + correction)
+                        elif correction == "count correction":
+                            mat = bu.compute_corrected_mat(
+                                braw_x_pair, single_freq, neff, lambda_w, entropy=False, squared=False)
+                            dict_scores[contact_score + " - " + correction] = mat
+                            ordered_methods.append(contact_score + " - " + correction)
+                        elif correction == "apc":
+                            mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=True, squared=False)
+                            dict_scores[contact_score + " - " + correction] = mat
+                            ordered_methods.append(contact_score + " - " + correction)
+                        elif correction == "no":
+                            mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=False)
+                            dict_scores[contact_score + " - " + correction] = mat
+                            ordered_methods.append(contact_score + " - " + correction)
+                    elif contact_score == 'squared sum':
+                        if correction == "entropy correction":
+                            mat = bu.compute_corrected_mat(
+                                braw_x_pair, single_freq, neff, lambda_w, entropy=True, squared=True)
+                            dict_scores[contact_score + " - " + correction] = mat
+                            ordered_methods.append(contact_score + " - " + correction)
+                        elif correction == "count correction":
+                            mat = bu.compute_corrected_mat(
+                                braw_x_pair, single_freq, neff, lambda_w, entropy=False, squared=True)
+                            dict_scores[contact_score + " - " + correction] = mat
+                            ordered_methods.append(contact_score + " - " + correction)
+                        elif correction == "pair weighted entropy correction":
+                            beta = np.loadtxt("./example_data/pair_weights_20000_balance5_contactthr8_noncontactthr20_diversitythr0.3_regcoeff10.txt")
+                            uij, eta = bu.compute_correction(
+                                single_freq, neff, lambda_w, braw_x_pair, entropy=True, squared=True)
+                            braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
+                            couplings_corrected = braw_sq - eta * uij
+                            mat = np.sum(
+                                beta[np.newaxis, np.newaxis, :, :] * couplings_corrected[:, :, :20, :20],
+                                axis=(3, 2)
+                            )
+                            dict_scores[contact_score + " - " + correction] = mat
+                            ordered_methods.append(contact_score + " - " + correction)
 
-        figure = prec_plot.plot_precision_vs_rank(
-            dict_scores, observed_distances, seq_sep, contact_threshold, "", ordered_methods, plot_out=None)
-
-        header = html.H3("Precision vs Top Ranked Contact Predictions ")
-        graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 700})
-        return html.Div([header, graph_element], style={'text-align': 'center'})
-
-    else:
-        return html.Div(
-            [
-                html.H3(
-                    "You need to load an alignment file, a PDB file and a binary raw coupling file for this analysis!"
-                )
-            ],
-            style={'text-align': 'center'}
-        )
+            figure = prec_plot.plot_precision_vs_rank(
+                dict_scores, observed_distances, seq_sep, contact_threshold, "", ordered_methods, plot_out=None)
 
 
-
-@app.callback(Output('tab-output-5', 'children'),
-              [Input('tabs', 'value'),
-               Input('protein_braw', 'children'),
-               Input('protein_alignment', 'children'),
-               Input('res_i', 'value'),
-               Input('res_j', 'value'),
-               Input('coupling_matrix_correction', 'value')
-               ])
-def display_tab_5(value, protein_braw_json, protein_alignment_json, residue_i_str, residue_j_str, correction):
-
-    if value == 5 and protein_braw_json is not None and protein_alignment_json is not None:
-
-        protein_braw = json.loads(protein_braw_json)
-        protein_alignment = json.loads(protein_alignment_json)
-
-
-        L = protein_alignment['L']
-        N = protein_alignment['N']
-        lambda_w = u.find_dict_key('lambda_pair', protein_braw['meta']['workflow'][0])
-        neff = u.find_dict_key('neff', protein_braw['meta']['workflow'][0])
-
-        braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
-        braw_xsingle = np.array(protein_braw['x_single']).reshape((L, 20))
-
-        residue_i = int(residue_i_str)
-        residue_j = int(residue_j_str)
-
-        single_terms_i = braw_xsingle[residue_i - 1][:20]
-        single_terms_j = braw_xsingle[residue_j - 1][:20]
-
-
-        print(correction)
-        if correction != "couplings with no correction":
-            alignment = np.array(protein_alignment['alignment'], dtype='uint8').reshape((N, L))
-            single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
-
-            if correction == 'entropy corrected squared couplings':
-                ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
-                    single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=True, squared=True)
-                braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
-                couplings_corrected = braw_sq[residue_i - 1, residue_j - 1, :20, :20] - eta * correction_for_braw_ij
-
-                print(couplings_corrected[io.AMINO_INDICES['C'], io.AMINO_INDICES['C']])
-
-                header = html.H3(
-                    "Single Potentials and corrected Coupling Matrix ({0}) for Residue Pair {1} - {2}".format(
-                        correction, residue_i, residue_j))
-
-
-                figure = plot.plot_coupling_matrix(
-                    couplings_corrected, single_terms_i, single_terms_j,
-                    residue_i, residue_j, "", "corrected coupling strength", 'diverging', type="heatmap", plot_file=None
-                )
-
-            elif correction == 'entropy correction (no square root)':
-                ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
-                    single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=True, squared=True)
-                couplings_corrected = eta * correction_for_braw_ij
-
-                print(couplings_corrected[io.AMINO_INDICES['C'], io.AMINO_INDICES['C']])
-
-                header = html.H3(
-                    "Single Correction Values (u_i) and Correction Matrix ({0}) for Residue Pair {1} - {2}".format(
-                        correction, residue_i, residue_j)
-                )
-                figure = plot.plot_coupling_matrix(
-                    couplings_corrected, ui[residue_i - 1], ui[residue_j - 1],
-                    residue_i, residue_j, "", "correction strength", 'continuous', type="heatmap", plot_file=None
-                )
-
-            elif correction == 'count corrected squared couplings':
-                ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
-                    single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=False, squared=True)
-                braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
-                couplings_corrected = braw_sq[residue_i - 1, residue_j - 1, :20, :20] - eta * correction_for_braw_ij
-
-                header = html.H3(
-                    "Single Potentials and corrected Coupling Matrix ({0}) for Residue Pair {1} - {2}".format(
-                        correction, residue_i, residue_j)
-                )
-
-                figure = plot.plot_coupling_matrix(
-                    couplings_corrected, single_terms_i, single_terms_j,
-                    residue_i, residue_j, "", "corrected coupling strength", 'diverging', type="heatmap", plot_file=None
-                )
-
-            elif correction == 'count correction (no square root)':
-                ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
-                    single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=False, squared=True)
-                couplings_corrected = eta * correction_for_braw_ij
-
-                header = html.H3(
-                    "Single Correction Values (u_i) and Correction Matrix ({0}) for Residue Pair {1} - {2}".format(
-                        correction, residue_i, residue_j)
-                )
-
-                figure = plot.plot_coupling_matrix(
-                    couplings_corrected, ui[residue_i - 1], ui[residue_j - 1],
-                    residue_i, residue_j, "", "correction strength", 'continuous', type="heatmap", plot_file=None
-                )
-            elif correction == 'pair weighted, entropy corrected squared couplings':
-                beta = np.loadtxt(
-                    "./example_data/pair_weights_20000_balance5_contactthr8_noncontactthr20_diversitythr0.3_regcoeff10.txt")
-
-                ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
-                    single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=True, squared=True)
-                braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
-                couplings_corrected = braw_sq[residue_i - 1, residue_j - 1, :20, :20] - eta * correction_for_braw_ij
-                pair_weights_couplings_corrected = beta * couplings_corrected
-
-                print(beta[io.AMINO_INDICES['C'], io.AMINO_INDICES['C']])
-                print(couplings_corrected[io.AMINO_INDICES['C'], io.AMINO_INDICES['C']])
-
-                header = html.H3(
-                    "Single Potentials and corrected Coupling Matrix ({0}) for Residue Pair {1} - {2}".format(
-                        correction, residue_i, residue_j)
-                )
-
-                figure = plot.plot_coupling_matrix(
-                    pair_weights_couplings_corrected, single_terms_i, single_terms_j,
-                    residue_i, residue_j, "", "correction strength", 'diverging', type="heatmap", plot_file=None
-                )
-            elif correction == 'only pair weights':
-                beta = np.loadtxt(
-                    "./example_data/pair_weights_20000_balance5_contactthr8_noncontactthr20_diversitythr0.3_regcoeff10.txt")
-
-                header = html.H3(
-                    "Matrix of Pair Weights".format(
-                        residue_i, residue_j)
-                )
-
-                figure = plot.plot_coupling_matrix(
-                    beta, np.zeros(20), np.zeros(20),
-                    residue_i, residue_j, "", "pair weights", 'diverging', type="heatmap", plot_file=None
-                )
+            header = html.H3("Precision vs Top Ranked Contact Predictions "
+                             "(sequence separation = {0} and contact threshold = {1})".format(seq_sep, contact_threshold))
+            graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 700})
+            return html.Div([header, graph_element], style={'text-align': 'center'})
 
         else:
-
-
-            couplings = braw_x_pair[residue_i - 1, residue_j - 1, :20, :20]
-            figure = plot.plot_coupling_matrix(
-                couplings, single_terms_i, single_terms_j,
-                residue_i, residue_j, "", "coupling strength",'diverging', type="heatmap", plot_file=None
+            return html.Div(
+                [
+                    html.H3(
+                        "You need to load an alignment file, a PDB file and a binary raw coupling file for this analysis!"
+                    )
+                ],
+                style={'text-align': 'center'}
             )
 
-            header = html.H3("Single Potentials and Coupling Matrix for Residue Pair {0} - {1}".format(residue_i, residue_j))
+
+    elif value == 5:
+        if protein_braw_json is not None and protein_alignment_json is not None:
+
+            protein_braw = json.loads(protein_braw_json)
+            protein_alignment = json.loads(protein_alignment_json)
+
+
+            L = protein_alignment['L']
+            N = protein_alignment['N']
+            lambda_w = u.find_dict_key('lambda_pair', protein_braw['meta']['workflow'][0])
+            neff = u.find_dict_key('neff', protein_braw['meta']['workflow'][0])
+
+            braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
+            braw_xsingle = np.array(protein_braw['x_single']).reshape((L, 20))
+
+            residue_i = int(residue_i_str)
+            residue_j = int(residue_j_str)
+
+            single_terms_i = braw_xsingle[residue_i - 1][:20]
+            single_terms_j = braw_xsingle[residue_j - 1][:20]
+
+
+            print(coupling_matrix_correction)
+            if coupling_matrix_correction != "couplings with no correction":
+                alignment = np.array(protein_alignment['alignment'], dtype='uint8').reshape((N, L))
+                single_freq, pair_freq = au.calculate_frequencies(alignment, au.uniform_pseudocounts)
+
+                if coupling_matrix_correction == 'entropy corrected squared couplings':
+                    ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
+                        single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=True, squared=True)
+                    braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
+                    couplings_corrected = braw_sq[residue_i - 1, residue_j - 1, :20, :20] - eta * correction_for_braw_ij
+
+                    print(couplings_corrected[io.AMINO_INDICES['C'], io.AMINO_INDICES['C']])
+
+                    header = html.H3(
+                        "Single Potentials and corrected Coupling Matrix ({0}) for Residue Pair {1} - {2}".format(
+                            coupling_matrix_correction, residue_i, residue_j))
+
+
+                    figure = plot.plot_coupling_matrix(
+                        couplings_corrected, single_terms_i, single_terms_j,
+                        residue_i, residue_j, "", "corrected coupling strength", 'diverging', type="heatmap", plot_file=None
+                    )
+
+                elif coupling_matrix_correction == 'entropy correction (no square root)':
+                    ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
+                        single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=True, squared=True)
+                    couplings_corrected = eta * correction_for_braw_ij
+
+                    print(couplings_corrected[io.AMINO_INDICES['C'], io.AMINO_INDICES['C']])
+
+                    header = html.H3(
+                        "Single Correction Values (u_i) and Correction Matrix ({0}) for Residue Pair {1} - {2}".format(
+                            coupling_matrix_correction, residue_i, residue_j)
+                    )
+                    figure = plot.plot_coupling_matrix(
+                        couplings_corrected, ui[residue_i - 1], ui[residue_j - 1],
+                        residue_i, residue_j, "", "correction strength", 'continuous', type="heatmap", plot_file=None
+                    )
+
+                elif coupling_matrix_correction == 'count corrected squared couplings':
+                    ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
+                        single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=False, squared=True)
+                    braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
+                    couplings_corrected = braw_sq[residue_i - 1, residue_j - 1, :20, :20] - eta * correction_for_braw_ij
+
+                    header = html.H3(
+                        "Single Potentials and corrected Coupling Matrix ({0}) for Residue Pair {1} - {2}".format(
+                            coupling_matrix_correction, residue_i, residue_j)
+                    )
+
+                    figure = plot.plot_coupling_matrix(
+                        couplings_corrected, single_terms_i, single_terms_j,
+                        residue_i, residue_j, "", "corrected coupling strength", 'diverging', type="heatmap", plot_file=None
+                    )
+
+                elif coupling_matrix_correction == 'count correction (no square root)':
+                    ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
+                        single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=False, squared=True)
+                    couplings_corrected = eta * correction_for_braw_ij
+
+                    header = html.H3(
+                        "Single Correction Values (u_i) and Correction Matrix ({0}) for Residue Pair {1} - {2}".format(
+                            coupling_matrix_correction, residue_i, residue_j)
+                    )
+
+                    figure = plot.plot_coupling_matrix(
+                        couplings_corrected, ui[residue_i - 1], ui[residue_j - 1],
+                        residue_i, residue_j, "", "correction strength", 'continuous', type="heatmap", plot_file=None
+                    )
+                elif coupling_matrix_correction == 'pair weighted, entropy corrected squared couplings':
+                    beta = np.loadtxt(
+                        "./example_data/pair_weights_20000_balance5_contactthr8_noncontactthr20_diversitythr0.3_regcoeff10.txt")
+
+                    ui, correction_for_braw_ij, eta = bu.compute_correction_ij(
+                        single_freq, neff, lambda_w, braw_x_pair, residue_i, residue_j, entropy=True, squared=True)
+                    braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
+                    couplings_corrected = braw_sq[residue_i - 1, residue_j - 1, :20, :20] - eta * correction_for_braw_ij
+                    pair_weights_couplings_corrected = beta * couplings_corrected
+
+                    print(beta[io.AMINO_INDICES['C'], io.AMINO_INDICES['C']])
+                    print(couplings_corrected[io.AMINO_INDICES['C'], io.AMINO_INDICES['C']])
+
+                    header = html.H3(
+                        "Single Potentials and corrected Coupling Matrix ({0}) for Residue Pair {1} - {2}".format(
+                            coupling_matrix_correction, residue_i, residue_j)
+                    )
+
+                    figure = plot.plot_coupling_matrix(
+                        pair_weights_couplings_corrected, single_terms_i, single_terms_j,
+                        residue_i, residue_j, "", "correction strength", 'diverging', type="heatmap", plot_file=None
+                    )
+                elif coupling_matrix_correction == 'only pair weights':
+                    beta = np.loadtxt(
+                        "./example_data/pair_weights_20000_balance5_contactthr8_noncontactthr20_diversitythr0.3_regcoeff10.txt")
+
+                    header = html.H3(
+                        "Matrix of Pair Weights".format(
+                            residue_i, residue_j)
+                    )
+
+                    figure = plot.plot_coupling_matrix(
+                        beta, np.zeros(20), np.zeros(20),
+                        residue_i, residue_j, "", "pair weights", 'diverging', type="heatmap", plot_file=None
+                    )
+
+            else:
+
+
+                couplings = braw_x_pair[residue_i - 1, residue_j - 1, :20, :20]
+                figure = plot.plot_coupling_matrix(
+                    couplings, single_terms_i, single_terms_j,
+                    residue_i, residue_j, "", "coupling strength",'diverging', type="heatmap", plot_file=None
+                )
+
+                header = html.H3("Single Potentials and Coupling Matrix for Residue Pair {0} - {1}".format(residue_i, residue_j))
+
         graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 700} )
         return html.Div([header, graph_element], style={'text-align': 'center', 'display': 'inline'})
-
 
 
 # Run the Dash app
