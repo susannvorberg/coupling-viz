@@ -596,11 +596,9 @@ def display_tab_(
         if protein_alignment_json:
 
             print("it is evaluated")
-            print(protein_alignment_dict)
             print(protein_alignment_json == 1)
-
             protein_alignment_dict = json.loads(protein_alignment_json)
-
+            print(protein_alignment_dict)
 
 
             figure={}
