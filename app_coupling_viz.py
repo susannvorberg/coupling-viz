@@ -587,152 +587,173 @@ def display_tab_(
         residue_i_str, residue_j_str, contact_score,  correction, plot_correction_only,
         seq_sep, contact_threshold, coupling_matrix_correction):
 
-    if value == 1 and protein_alignment_json:
+    if value == 1:
+        if protein_alignment_json:
 
-        protein_alignment_dict = json.loads(protein_alignment_json)
+            protein_alignment_dict = json.loads(protein_alignment_json)
 
-        figure={}
-        h2=""
+            figure={}
+            h2=""
 
-        if 'L' in protein_alignment_dict:
-            L = protein_alignment_dict['L']
-            single_counts = np.array(protein_alignment_dict['single_counts']).reshape((L,20))
+            if 'L' in protein_alignment_dict:
+                L = protein_alignment_dict['L']
+                single_counts = np.array(protein_alignment_dict['single_counts']).reshape((L,20))
 
-            figure = alignment_plot.plot_amino_acid_distribution_per_position(single_counts, "", plot_file=None, freq=False)
-            h2=html.H2("Distribution of Amino Acids per position in alignment")
+                figure = alignment_plot.plot_amino_acid_distribution_per_position(single_counts, "", plot_file=None, freq=False)
+                h2=html.H2("Distribution of Amino Acids per position in alignment")
 
-        graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
-        return html.Div([h2, graph_element], style={'text-align': 'center'})
+            graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
+            return html.Div([h2, graph_element], style={'text-align': 'center'})
+        else:
+            return html.Div(
+                html.H3("You need to load an alingmnment for this analysis!"),
+                style={'text-align': 'center'}
+            )
 
+    elif value == 2:
+        if protein_alignment_json:
 
-    elif value == 2 and protein_alignment_json:
+            protein_alignment_dict = json.loads(protein_alignment_json)
+            figure = {}
 
-        protein_alignment_dict = json.loads(protein_alignment_json)
-        figure = {}
+            if 'alignment' in protein_alignment_dict:
+                L = protein_alignment_dict['L']
+                single_counts = np.array(protein_alignment_dict['single_counts']).reshape((L, 20))
+                pairwise_counts = np.array(protein_alignment_dict['pair_counts']).reshape((L,L,20,20))
 
-        if 'alignment' in protein_alignment_dict:
-            L = protein_alignment_dict['L']
-            single_counts = np.array(protein_alignment_dict['single_counts']).reshape((L, 20))
-            pairwise_counts = np.array(protein_alignment_dict['pair_counts']).reshape((L,L,20,20))
+                protein_name = protein_alignment_dict['protein_name']
 
-            protein_name = protein_alignment_dict['protein_name']
-
-            figure = pairwise_aa_plot.plot_aa_frequencies(
-                single_counts, pairwise_counts, protein_name, int(residue_i_str), int(residue_j_str), plot_frequencies=True,
-                plot_type="heatmap", plot_out=None)
-
-
-        header = html.H3("Single and Pairwise Amino Acid Frequencies for Residue Pair {0} - {1}".format(residue_i_str, residue_j_str))
-        graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
-
-        return html.Div([header, graph_element], style={'text-align': 'center'})
-
-
-    elif value == 3 and protein_braw_json and protein_alignment_json and protein_pdb_json:
-
-        protein_braw = json.loads(protein_braw_json)
-        protein_alignment = json.loads(protein_alignment_json)
-        protein_pdb = json.loads(protein_pdb_json)
-
-        figure = {}
-
-        if 'x_pair' in protein_braw:
-
-            L = u.find_dict_key('ncol', protein_braw['meta']['workflow'][0])
-            N = u.find_dict_key('nrow', protein_braw['meta']['workflow'][0])
-            lambda_w = u.find_dict_key('lambda_pair', protein_braw['meta']['workflow'][0])
-            neff = u.find_dict_key('neff', protein_braw['meta']['workflow'][0])
-            braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
+                figure = pairwise_aa_plot.plot_aa_frequencies(
+                    single_counts, pairwise_counts, protein_name, int(residue_i_str), int(residue_j_str), plot_frequencies=True,
+                    plot_type="heatmap", plot_out=None)
 
 
-            single_freq = np.array(protein_alignment['single_freq']).reshape((L,20))
-            alignment = np.array(protein_alignment['alignment']).reshape((N, L))
-            observed_distances = np.array(protein_pdb['distance_map']).reshape((L,L))
+            header = html.H3("Single and Pairwise Amino Acid Frequencies for Residue Pair {0} - {1}".format(residue_i_str, residue_j_str))
+            graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 800} )
 
-            ### if alignment file is specified, compute gaps
-            gaps_percentage_plot = aligncov.plot_percentage_gaps_per_position(alignment, plot_file=None)
+            return html.Div([header, graph_element], style={'text-align': 'center'})
+        else:
+            return html.Div(
+                html.H3("You need to load an alingmnment for this analysis!"),
+                style={'text-align': 'center'}
+            )
 
-            print(contact_score)
-            print(correction)
-            if contact_score == "frobenius":
-                if correction == "ec":
-                    mat = bu.compute_corrected_mat(braw_x_pair, single_freq, neff, lambda_w, entropy=True, squared=False)
-                elif correction == "cc":
-                    mat = bu.compute_corrected_mat(braw_x_pair, single_freq, neff, lambda_w, entropy=False, squared=False)
-                elif correction == "pw-ec":
-                    return html.Div(html.H3("pair weights correction only applicable to squared sum score (weights have been optimized with squared sum score)!"), style={"text-align": "center"})
-                elif correction == "apc":
-                    mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=True, squared=False)
-                else:
-                    mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=False)
-            elif contact_score == 'squared_sum':
-                if correction == "ec":
-                    mat = bu.compute_corrected_mat(braw_x_pair, single_freq, neff, lambda_w, entropy=True, squared=True)
-                elif correction == "cc":
-                    mat = bu.compute_corrected_mat(braw_x_pair, single_freq, neff, lambda_w, entropy=False, squared=True)
-                elif correction == "pw-ec":
-                    beta = np.loadtxt("./example_data/pair_weights_20000_balance5_contactthr8_noncontactthr20_diversitythr0.3_regcoeff10.txt")
-                    uij, eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=True, squared=True)
-                    braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
-                    couplings_corrected = braw_sq - eta * uij
-                    mat = np.sum(beta[np.newaxis, np.newaxis, :, :] * couplings_corrected[:,:,:20,:20], axis=(3,2))
-                elif correction == "apc":
-                    mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=True, squared=True)
-                else:
-                    mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=True)
+    elif value == 3:
+        if protein_braw_json and protein_alignment_json and protein_pdb_json:
 
-            print(plot_correction_only)
-            if len(plot_correction_only) > 0:
-                if contact_score == "frobenius" and correction == "ec":
-                    uij, scaling_factor_eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=True, squared=False)
-                    mat = scaling_factor_eta * np.sqrt(np.sum(uij, axis=(3, 2)))
-                elif contact_score == "squared_sum" and correction == "ec":
-                    uij, scaling_factor_eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=True, squared=True)
-                    mat = scaling_factor_eta * np.sum(uij, axis=(3, 2))
-                elif contact_score == "frobenius" and correction == "cc":
-                    uij, scaling_factor_eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=False, squared=False)
-                    mat = scaling_factor_eta * np.sqrt(np.sum(uij, axis=(3, 2)))
-                elif contact_score == "squared_sum" and correction == "cc":
-                    uij, scaling_factor_eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=False, squared=True)
-                    mat = scaling_factor_eta * np.sum(uij, axis=(3, 2))
-                elif contact_score == "frobenius" and correction == "apc":
-                    cmat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=False)
-                    mean = np.mean(cmat, axis=0)
-                    mat = mean[:, np.newaxis] * mean[np.newaxis, :] / np.mean(cmat)
-                elif contact_score == "squared_sum" and correction == "apc":
-                    cmat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=True)
-                    mean = np.mean(cmat, axis=0)
-                    mat = mean[:, np.newaxis] * mean[np.newaxis, :] / np.mean(cmat)
-                elif correction == "pw-ec":
-                    return html.Div(html.H3("Not applicable."), style={"text-align": "center"})
-                else:
-                    return html.Div(html.H3("No correction selected."), style={"text-align": "center"})
+            protein_braw = json.loads(protein_braw_json)
+            protein_alignment = json.loads(protein_alignment_json)
+            protein_pdb = json.loads(protein_pdb_json)
+
+            figure = {}
+
+            if 'x_pair' in protein_braw:
+
+                print(protein_braw['meta']['workflow'][0])
+                L = u.find_dict_key('ncol', protein_braw['meta']['workflow'][0])
+                N = u.find_dict_key('nrow', protein_braw['meta']['workflow'][0])
+                lambda_w = u.find_dict_key('lambda_pair', protein_braw['meta']['workflow'][0])
+                neff = u.find_dict_key('neff', protein_braw['meta']['workflow'][0])
+                braw_x_pair = np.array(protein_braw['x_pair']).reshape((L, L, 20, 20))
 
 
-            plot_matrix = pd.DataFrame()
-            indices_upper_tri = np.triu_indices(L, seq_sep)
+                single_freq = np.array(protein_alignment['single_freq']).reshape((L,20))
+                alignment = np.array(protein_alignment['alignment']).reshape((N, L))
+                observed_distances = np.array(protein_pdb['distance_map']).reshape((L,L))
 
-            #get residue-residue distance information from PDB
-            if observed_distances is not None:
-                plot_matrix['distance'] = observed_distances[indices_upper_tri]
-                plot_matrix['contact'] = ((plot_matrix.distance < contact_threshold) * 1).tolist()
+                ### if alignment file is specified, compute gaps
+                gaps_percentage_plot = aligncov.plot_percentage_gaps_per_position(alignment, plot_file=None)
 
-            # add scores
-            plot_matrix['residue_i'] = indices_upper_tri[0] + 1
-            plot_matrix['residue_j'] = indices_upper_tri[1] + 1
-            plot_matrix['confidence'] = mat[indices_upper_tri]
+                print(contact_score)
+                print(correction)
+                if contact_score == "frobenius":
+                    if correction == "ec":
+                        mat = bu.compute_corrected_mat(braw_x_pair, single_freq, neff, lambda_w, entropy=True, squared=False)
+                    elif correction == "cc":
+                        mat = bu.compute_corrected_mat(braw_x_pair, single_freq, neff, lambda_w, entropy=False, squared=False)
+                    elif correction == "pw-ec":
+                        return html.Div(html.H3("pair weights correction only applicable to squared sum score (weights have been optimized with squared sum score)!"), style={"text-align": "center"})
+                    elif correction == "apc":
+                        mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=True, squared=False)
+                    else:
+                        mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=False)
+                elif contact_score == 'squared_sum':
+                    if correction == "ec":
+                        mat = bu.compute_corrected_mat(braw_x_pair, single_freq, neff, lambda_w, entropy=True, squared=True)
+                    elif correction == "cc":
+                        mat = bu.compute_corrected_mat(braw_x_pair, single_freq, neff, lambda_w, entropy=False, squared=True)
+                    elif correction == "pw-ec":
+                        beta = np.loadtxt("./example_data/pair_weights_20000_balance5_contactthr8_noncontactthr20_diversitythr0.3_regcoeff10.txt")
+                        uij, eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=True, squared=True)
+                        braw_sq = braw_x_pair[:, :, :20, :20] * braw_x_pair[:, :, :20, :20]
+                        couplings_corrected = braw_sq - eta * uij
+                        mat = np.sum(beta[np.newaxis, np.newaxis, :, :] * couplings_corrected[:,:,:20,:20], axis=(3,2))
+                    elif correction == "apc":
+                        mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=True, squared=True)
+                    else:
+                        mat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=True)
 
-            ### Plot Contact Map
-            figure = plot.plot_contact_map_someScore_plotly(
-                plot_matrix, "", seq_sep, gaps_percentage_plot, plot_file=None)
+                print(plot_correction_only)
+                if len(plot_correction_only) > 0:
+                    if contact_score == "frobenius" and correction == "ec":
+                        uij, scaling_factor_eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=True, squared=False)
+                        mat = scaling_factor_eta * np.sqrt(np.sum(uij, axis=(3, 2)))
+                    elif contact_score == "squared_sum" and correction == "ec":
+                        uij, scaling_factor_eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=True, squared=True)
+                        mat = scaling_factor_eta * np.sum(uij, axis=(3, 2))
+                    elif contact_score == "frobenius" and correction == "cc":
+                        uij, scaling_factor_eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=False, squared=False)
+                        mat = scaling_factor_eta * np.sqrt(np.sum(uij, axis=(3, 2)))
+                    elif contact_score == "squared_sum" and correction == "cc":
+                        uij, scaling_factor_eta = bu.compute_correction(single_freq, neff, lambda_w, braw_x_pair, entropy=False, squared=True)
+                        mat = scaling_factor_eta * np.sum(uij, axis=(3, 2))
+                    elif contact_score == "frobenius" and correction == "apc":
+                        cmat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=False)
+                        mean = np.mean(cmat, axis=0)
+                        mat = mean[:, np.newaxis] * mean[np.newaxis, :] / np.mean(cmat)
+                    elif contact_score == "squared_sum" and correction == "apc":
+                        cmat = bu.compute_l2norm_from_braw(braw_x_pair, apc=False, squared=True)
+                        mean = np.mean(cmat, axis=0)
+                        mat = mean[:, np.newaxis] * mean[np.newaxis, :] / np.mean(cmat)
+                    elif correction == "pw-ec":
+                        return html.Div(html.H3("Not applicable."), style={"text-align": "center"})
+                    else:
+                        return html.Div(html.H3("No correction selected."), style={"text-align": "center"})
+
+
+                plot_matrix = pd.DataFrame()
+                indices_upper_tri = np.triu_indices(L, seq_sep)
+
+                #get residue-residue distance information from PDB
+                if observed_distances is not None:
+                    plot_matrix['distance'] = observed_distances[indices_upper_tri]
+                    plot_matrix['contact'] = ((plot_matrix.distance < contact_threshold) * 1).tolist()
+
+                # add scores
+                plot_matrix['residue_i'] = indices_upper_tri[0] + 1
+                plot_matrix['residue_j'] = indices_upper_tri[1] + 1
+                plot_matrix['confidence'] = mat[indices_upper_tri]
+
+                ### Plot Contact Map
+                figure = plot.plot_contact_map_someScore_plotly(
+                    plot_matrix, "", seq_sep, gaps_percentage_plot, plot_file=None)
 
 
 
-        header = html.H3("Contact Map using contact score = {0} and correction = {1}".format(contact_score, correction))
-        subheader = html.H3("with sequence separation = {0} and contact threshold = {1}".format(seq_sep, contact_threshold))
-        graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 700})
+            header = html.H3("Contact Map using contact score = {0} and correction = {1}".format(contact_score, correction))
+            subheader = html.H3("with sequence separation = {0} and contact threshold = {1}".format(seq_sep, contact_threshold))
+            graph_element = dcc.Graph( id='graph', figure=figure, style={'height': 700})
 
-        return html.Div([header, subheader, graph_element], style={'text-align': 'center'})
+            return html.Div([header, subheader, graph_element], style={'text-align': 'center'})
+        else:
+            return html.Div(
+                [
+                    html.H3(
+                        "You need to load an alignment file, a PDB file and a binary raw coupling file for this analysis!"
+                    )
+                ],
+                style={'text-align': 'center'}
+            )
 
     elif value == 4:
         if protein_braw_json and protein_pdb_json and protein_alignment_json:
@@ -816,7 +837,6 @@ def display_tab_(
                 ],
                 style={'text-align': 'center'}
             )
-
 
     elif value == 5:
         if protein_braw_json is not None and protein_alignment_json is not None:
