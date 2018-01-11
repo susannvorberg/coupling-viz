@@ -588,14 +588,20 @@ def display_tab_(
         seq_sep, contact_threshold, coupling_matrix_correction):
 
     if value == 1:
+
+        print("before evaluation")
         print(protein_alignment_json)
         print(protein_alignment_json == 1)
-        
+
         if protein_alignment_json:
+
+            print("it is evaluated")
+            print(protein_alignment_dict)
+            print(protein_alignment_json == 1)
 
             protein_alignment_dict = json.loads(protein_alignment_json)
 
-            print(protein_alignment_dict)
+
 
             figure={}
             h2=""
