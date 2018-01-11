@@ -385,6 +385,8 @@ def load_braw_data(braw_contents_list, braw_name, example_protein):
         protein_braw_dict['x_single'] = braw.x_single[:, :20].reshape(L * 20).tolist()
         protein_braw_dict['x_pair'] = braw.x_pair[:, :, :20, :20].reshape(L * L * 20 * 20).tolist()
 
+    print(protein_braw_dict.keys())
+
     return json.dumps(protein_braw_dict)
 
 
@@ -825,6 +827,8 @@ def display_tab_(
     elif value == 5:
 
         if 'x_pair' in protein_braw_dict and 'single_freq' in protein_alignment_dict:
+
+            print(protein_braw_dict['meta']['workflow'][0])
 
             L = u.find_dict_key('ncol', protein_braw_dict['meta']['workflow'][0])
             lambda_w = u.find_dict_key('lambda_pair', protein_braw_dict['meta']['workflow'][0])
