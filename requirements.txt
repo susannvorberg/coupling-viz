@@ -39,5 +39,5 @@ scipy==1.0.0
 six==1.11.0
 traitlets==4.3.2
 urllib3==1.22
-Werkzeug==0.14.1
+Werkzeug==0.15.3
 git+git://github.com/susannvorberg/contact_prediction.git@199aae6bf2317c2e5d0a686b60a195304275bfd6
